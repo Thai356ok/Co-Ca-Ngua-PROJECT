@@ -129,6 +129,7 @@ GameObject:
   m_Component:
   - component: {fileID: 62155849}
   - component: {fileID: 62155850}
+  - component: {fileID: 62155851}
   m_Layer: 0
   m_Name: Quan_3
   m_TagString: Untagged
@@ -145,7 +146,7 @@ Transform:
   m_GameObject: {fileID: 62155848}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 4.469, y: 4.146, z: 0}
+  m_LocalPosition: {x: 4.49, y: 4.21, z: 0}
   m_LocalScale: {x: 0.2, y: 0.2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -210,6 +211,24 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!114 &62155851
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 62155848}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc522616c72433148a012489a2dcb6eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::QuancoMovement
+  mauCuaToi: 1
+  viTriHienTai: -1
+  soBuocDaDi: 0
+  dangOChuongDich: 0
+  bacChuongHienTai: 0
+  dangDiChuyen: 0
 --- !u!1 &67173948
 GameObject:
   m_ObjectHideFlags: 0
@@ -220,6 +239,7 @@ GameObject:
   m_Component:
   - component: {fileID: 67173949}
   - component: {fileID: 67173950}
+  - component: {fileID: 67173951}
   m_Layer: 0
   m_Name: Quan_2
   m_TagString: Untagged
@@ -236,7 +256,7 @@ Transform:
   m_GameObject: {fileID: 67173948}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 4.456, y: 2.679, z: 0}
+  m_LocalPosition: {x: 4.48, y: 2.74, z: 0}
   m_LocalScale: {x: 0.2, y: 0.2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -301,6 +321,24 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!114 &67173951
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 67173948}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc522616c72433148a012489a2dcb6eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::QuancoMovement
+  mauCuaToi: 1
+  viTriHienTai: -1
+  soBuocDaDi: 0
+  dangOChuongDich: 0
+  bacChuongHienTai: 0
+  dangDiChuyen: 0
 --- !u!1 &99762515
 GameObject:
   m_ObjectHideFlags: 0
@@ -470,6 +508,7 @@ GameObject:
   m_Component:
   - component: {fileID: 237987574}
   - component: {fileID: 237987575}
+  - component: {fileID: 237987576}
   m_Layer: 0
   m_Name: Quan_1
   m_TagString: Untagged
@@ -486,7 +525,7 @@ Transform:
   m_GameObject: {fileID: 237987573}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.13, y: -2.91, z: 0}
+  m_LocalPosition: {x: 3.09, y: -2.96, z: 0}
   m_LocalScale: {x: 0.2, y: 0.2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -551,6 +590,24 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!114 &237987576
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 237987573}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc522616c72433148a012489a2dcb6eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::QuancoMovement
+  mauCuaToi: 0
+  viTriHienTai: -1
+  soBuocDaDi: 0
+  dangOChuongDich: 0
+  bacChuongHienTai: 0
+  dangDiChuyen: 0
 --- !u!1 &243590596
 GameObject:
   m_ObjectHideFlags: 0
@@ -905,6 +962,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 500292740}
+  - component: {fileID: 500292741}
   m_Layer: 0
   m_Name: MapManager
   m_TagString: Untagged
@@ -927,6 +985,28 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &500292741
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 500292739}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: abe1cc25db622d143aa11cdb0e73373a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MapManager
+  vongTronChungObj: {fileID: 1508743511}
+  duongVeDichXanhLaObj: {fileID: 1509889253}
+  duongVeDichVangObj: {fileID: 1338961710}
+  duongVeDichXanhDuongObj: {fileID: 1926000906}
+  duongVeDichDoObj: {fileID: 987249368}
+  vongTronChung: []
+  chuongXanhLa: []
+  chuongVang: []
+  chuongXanhDuong: []
+  chuongDo: []
 --- !u!1 &500642842
 GameObject:
   m_ObjectHideFlags: 0
@@ -937,8 +1017,9 @@ GameObject:
   m_Component:
   - component: {fileID: 500642843}
   - component: {fileID: 500642844}
+  - component: {fileID: 500642845}
   m_Layer: 0
-  m_Name: Quan_1
+  m_Name: Quan_3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1018,6 +1099,24 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!114 &500642845
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 500642842}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc522616c72433148a012489a2dcb6eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::QuancoMovement
+  mauCuaToi: 2
+  viTriHienTai: -1
+  soBuocDaDi: 0
+  dangOChuongDich: 0
+  bacChuongHienTai: 0
+  dangDiChuyen: 0
 --- !u!1 &502431021
 GameObject:
   m_ObjectHideFlags: 0
@@ -1214,8 +1313,9 @@ GameObject:
   m_Component:
   - component: {fileID: 642503706}
   - component: {fileID: 642503707}
+  - component: {fileID: 642503708}
   m_Layer: 0
-  m_Name: Quan_1
+  m_Name: Quan_4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1230,7 +1330,7 @@ Transform:
   m_GameObject: {fileID: 642503705}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.27, y: 4.14, z: 0}
+  m_LocalPosition: {x: -1.33, y: 4.2, z: 0}
   m_LocalScale: {x: 0.2, y: 0.2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1295,6 +1395,24 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!114 &642503708
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 642503705}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc522616c72433148a012489a2dcb6eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::QuancoMovement
+  mauCuaToi: 2
+  viTriHienTai: -1
+  soBuocDaDi: 0
+  dangOChuongDich: 0
+  bacChuongHienTai: 0
+  dangDiChuyen: 0
 --- !u!1 &642908626
 GameObject:
   m_ObjectHideFlags: 0
@@ -1336,6 +1454,7 @@ GameObject:
   m_Component:
   - component: {fileID: 669514571}
   - component: {fileID: 669514572}
+  - component: {fileID: 669514573}
   m_Layer: 0
   m_Name: Quan_4
   m_TagString: Untagged
@@ -1352,7 +1471,7 @@ Transform:
   m_GameObject: {fileID: 669514570}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 3.043, y: 4.061, z: 0}
+  m_LocalPosition: {x: 3.06, y: 4.19, z: 0}
   m_LocalScale: {x: 0.2, y: 0.2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1417,6 +1536,24 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!114 &669514573
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 669514570}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc522616c72433148a012489a2dcb6eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::QuancoMovement
+  mauCuaToi: 1
+  viTriHienTai: -1
+  soBuocDaDi: 0
+  dangOChuongDich: 0
+  bacChuongHienTai: 0
+  dangDiChuyen: 0
 --- !u!1 &672310261
 GameObject:
   m_ObjectHideFlags: 0
@@ -1714,6 +1851,7 @@ GameObject:
   m_Component:
   - component: {fileID: 815477793}
   - component: {fileID: 815477794}
+  - component: {fileID: 815477795}
   m_Layer: 0
   m_Name: Quan_4
   m_TagString: Untagged
@@ -1795,6 +1933,24 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!114 &815477795
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 815477792}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc522616c72433148a012489a2dcb6eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::QuancoMovement
+  mauCuaToi: 3
+  viTriHienTai: -1
+  soBuocDaDi: 0
+  dangOChuongDich: 0
+  bacChuongHienTai: 0
+  dangDiChuyen: 0
 --- !u!1 &844423343
 GameObject:
   m_ObjectHideFlags: 0
@@ -2249,6 +2405,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1075261646}
   - component: {fileID: 1075261647}
+  - component: {fileID: 1075261648}
   m_Layer: 0
   m_Name: Quan_2
   m_TagString: Untagged
@@ -2265,7 +2422,7 @@ Transform:
   m_GameObject: {fileID: 1075261645}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.42, y: -2.91, z: 0}
+  m_LocalPosition: {x: 4.46, y: -2.95, z: 0}
   m_LocalScale: {x: 0.2, y: 0.2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2330,6 +2487,24 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!114 &1075261648
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1075261645}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc522616c72433148a012489a2dcb6eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::QuancoMovement
+  mauCuaToi: 0
+  viTriHienTai: -1
+  soBuocDaDi: 0
+  dangOChuongDich: 0
+  bacChuongHienTai: 0
+  dangDiChuyen: 0
 --- !u!1 &1127237099
 GameObject:
   m_ObjectHideFlags: 0
@@ -2432,6 +2607,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1139136404}
   - component: {fileID: 1139136405}
+  - component: {fileID: 1139136406}
   m_Layer: 0
   m_Name: Quan_3
   m_TagString: Untagged
@@ -2448,7 +2624,7 @@ Transform:
   m_GameObject: {fileID: 1139136403}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.45, y: -1.81, z: 0}
+  m_LocalPosition: {x: 4.47, y: -1.56, z: 0}
   m_LocalScale: {x: 0.2, y: 0.2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2513,6 +2689,24 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!114 &1139136406
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1139136403}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc522616c72433148a012489a2dcb6eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::QuancoMovement
+  mauCuaToi: 0
+  viTriHienTai: -1
+  soBuocDaDi: 0
+  dangOChuongDich: 0
+  bacChuongHienTai: 0
+  dangDiChuyen: 0
 --- !u!1 &1161941854
 GameObject:
   m_ObjectHideFlags: 0
@@ -2616,6 +2810,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1199541002}
   - component: {fileID: 1199541003}
+  - component: {fileID: 1199541004}
   m_Layer: 0
   m_Name: Quan_3
   m_TagString: Untagged
@@ -2697,6 +2892,24 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!114 &1199541004
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1199541001}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc522616c72433148a012489a2dcb6eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::QuancoMovement
+  mauCuaToi: 3
+  viTriHienTai: -1
+  soBuocDaDi: 0
+  dangOChuongDich: 0
+  bacChuongHienTai: 0
+  dangDiChuyen: 0
 --- !u!1 &1214960277
 GameObject:
   m_ObjectHideFlags: 0
@@ -2924,6 +3137,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1327027183}
   - component: {fileID: 1327027184}
+  - component: {fileID: 1327027185}
   m_Layer: 0
   m_Name: 'Quan_1 '
   m_TagString: Untagged
@@ -3005,6 +3219,24 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!114 &1327027185
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1327027182}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc522616c72433148a012489a2dcb6eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::QuancoMovement
+  mauCuaToi: 3
+  viTriHienTai: -1
+  soBuocDaDi: 0
+  dangOChuongDich: 0
+  bacChuongHienTai: 0
+  dangDiChuyen: 0
 --- !u!1 &1338961710
 GameObject:
   m_ObjectHideFlags: 0
@@ -3176,8 +3408,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1450850596}
   - component: {fileID: 1450850597}
+  - component: {fileID: 1450850598}
   m_Layer: 0
-  m_Name: Quan_1
+  m_Name: Quan_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3257,6 +3490,24 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!114 &1450850598
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1450850595}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc522616c72433148a012489a2dcb6eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::QuancoMovement
+  mauCuaToi: 2
+  viTriHienTai: -1
+  soBuocDaDi: 0
+  dangOChuongDich: 0
+  bacChuongHienTai: 0
+  dangDiChuyen: 0
 --- !u!1 &1469448876
 GameObject:
   m_ObjectHideFlags: 0
@@ -3515,6 +3766,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1601439650}
   - component: {fileID: 1601439651}
+  - component: {fileID: 1601439652}
   m_Layer: 0
   m_Name: 'Quan_1 '
   m_TagString: Untagged
@@ -3531,7 +3783,7 @@ Transform:
   m_GameObject: {fileID: 1601439649}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.24, y: 2.73, z: 0}
+  m_LocalPosition: {x: -1.28, y: 2.82, z: 0}
   m_LocalScale: {x: 0.2, y: 0.2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3596,6 +3848,24 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!114 &1601439652
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1601439649}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc522616c72433148a012489a2dcb6eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::QuancoMovement
+  mauCuaToi: 2
+  viTriHienTai: -1
+  soBuocDaDi: 0
+  dangOChuongDich: 0
+  bacChuongHienTai: 0
+  dangDiChuyen: 0
 --- !u!1 &1612812923
 GameObject:
   m_ObjectHideFlags: 0
@@ -3704,6 +3974,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1659183228}
   - component: {fileID: 1659183229}
+  - component: {fileID: 1659183230}
   m_Layer: 0
   m_Name: Quan_2
   m_TagString: Untagged
@@ -3785,6 +4056,24 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!114 &1659183230
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1659183227}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc522616c72433148a012489a2dcb6eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::QuancoMovement
+  mauCuaToi: 3
+  viTriHienTai: -1
+  soBuocDaDi: 0
+  dangOChuongDich: 0
+  bacChuongHienTai: 0
+  dangDiChuyen: 0
 --- !u!1 &1664454953
 GameObject:
   m_ObjectHideFlags: 0
@@ -3826,6 +4115,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1670590854}
   - component: {fileID: 1670590855}
+  - component: {fileID: 1670590856}
   m_Layer: 0
   m_Name: Quan_4
   m_TagString: Untagged
@@ -3842,7 +4132,7 @@ Transform:
   m_GameObject: {fileID: 1670590853}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.12, y: -1.78, z: 0}
+  m_LocalPosition: {x: 3.07, y: -1.6, z: 0}
   m_LocalScale: {x: 0.2, y: 0.2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3907,6 +4197,24 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!114 &1670590856
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1670590853}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc522616c72433148a012489a2dcb6eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::QuancoMovement
+  mauCuaToi: 0
+  viTriHienTai: -1
+  soBuocDaDi: 0
+  dangOChuongDich: 0
+  bacChuongHienTai: 0
+  dangDiChuyen: 0
 --- !u!1 &1680651310
 GameObject:
   m_ObjectHideFlags: 0
@@ -4479,6 +4787,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2075572243}
   - component: {fileID: 2075572244}
+  - component: {fileID: 2075572245}
   m_Layer: 0
   m_Name: Quan_1
   m_TagString: Untagged
@@ -4495,7 +4804,7 @@ Transform:
   m_GameObject: {fileID: 2075572242}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 3.07, y: 2.67, z: 0}
+  m_LocalPosition: {x: 3.11, y: 2.76, z: 0}
   m_LocalScale: {x: 0.2, y: 0.2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4560,6 +4869,24 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!114 &2075572245
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2075572242}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc522616c72433148a012489a2dcb6eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::QuancoMovement
+  mauCuaToi: 1
+  viTriHienTai: -1
+  soBuocDaDi: 0
+  dangOChuongDich: 0
+  bacChuongHienTai: 0
+  dangDiChuyen: 0
 --- !u!1 &2078894931
 GameObject:
   m_ObjectHideFlags: 0
