@@ -4,50 +4,46 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // ============================================================
-//  ENUM: Tất cả trạng thái của vòng lặp game
+//  ENUM dùng chung toàn project – khớp với Dev 1 (MauSac)
+//  Thứ tự giữ nguyên theo Dev 1: XanhLa=0, Vang=1, XanhDuong=2, Do=3
+// ============================================================
+public enum MauNguoiChoi
+{
+    XanhLa   = 0,
+    Vang     = 1,
+    XanhDuong = 2,
+    Do       = 3
+}
+
+// ============================================================
+//  ENUM: Trạng thái vòng lặp game
 // ============================================================
 public enum GameState
 {
-    Idle,               // Khởi động, chưa bắt đầu
-    Wait_For_Roll,      // Chờ người chơi hiện tại tung xúc xắc
-    Rolling,            // Đang trong animation tung xúc xắc
-    Wait_For_Selection, // Chờ người chơi chọn quân nào để đi
-    Moving,             // Quân đang di chuyển (animation)
-    Check_Win,          // Kiểm tra điều kiện thắng sau mỗi nước đi
-    Game_Over           // Trò chơi kết thúc
+    Idle,
+    Wait_For_Roll,
+    Rolling,
+    Wait_For_Selection,
+    Moving,
+    Check_Win,
+    Game_Over
 }
 
 // ============================================================
-//  ENUM: 4 màu người chơi
-// ============================================================
-public enum PlayerColor
-{
-    Red = 0,
-    Blue = 1,
-    Green = 2,
-    Yellow = 3
-}
-
-// ============================================================
-//  CLASS: Dữ liệu của một người chơi
+//  CLASS: Dữ liệu một người chơi
 // ============================================================
 [Serializable]
-public class PlayerData
+public class NguoiChoi
 {
-    public PlayerColor color;
-    public bool isHuman = true;        // false = AI (mở rộng sau)
-    public int tokenFinishedCount = 0; // Số quân đã về đích
-    public bool hasWon = false;
+    public MauNguoiChoi mau;
+    public bool daThang = false;
+    public int soQuanVeDich = 0;
 
-    public PlayerData(PlayerColor c, bool human = true)
-    {
-        color = c;
-        isHuman = human;
-    }
+    public NguoiChoi(MauNguoiChoi m) { mau = m; }
 }
 
 // ============================================================
-//  GAMEMANAGER: Bộ não trung tâm của game
+//  GAMEMANAGER
 // ============================================================
 public class GameManager : MonoBehaviour
 {
@@ -57,284 +53,250 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get; private set; }
 
     // ----------------------------------------------------------
-    //  Inspector references – kéo thả trong Editor
+    //  References – kéo thả trong Inspector
     // ----------------------------------------------------------
-    [Header("References")]
-    [SerializeField] private DiceManager diceManager;       // Dev 1 cung cấp
-    [SerializeField] private TokenLogic  tokenLogic;        // File kế bên
-    // UIManager và BoardManager sẽ được thêm khi Dev khác hoàn thành
+    [Header("References (kéo thả vào đây)")]
+    [SerializeField] private DiceManager diceManager;
+    [SerializeField] private TokenLogic  tokenLogic;
 
     // ----------------------------------------------------------
     //  State Machine
     // ----------------------------------------------------------
-    [Header("State (Read-Only in Inspector)")]
+    [Header("Trạng thái hiện tại (Read-Only)")]
     [SerializeField] private GameState currentState = GameState.Idle;
     public GameState CurrentState => currentState;
 
-    // Event để UI / các hệ thống khác lắng nghe khi state thay đổi
-    public static event Action<GameState> OnStateChanged;
+    // Event để Dev 3 (UI) lắng nghe
+    public static event Action<GameState>       OnStateChanged;
+    public static event Action<MauNguoiChoi>    OnTurnChanged;
+    public static event Action<MauNguoiChoi>    OnGameOver;
 
     // ----------------------------------------------------------
-    //  Turn Manager data
+    //  Turn Manager
     // ----------------------------------------------------------
-    [Header("Players")]
-    [SerializeField] private int numberOfPlayers = 4;
+    [Header("Người chơi")]
+    [SerializeField] private int soNguoiChoi = 4;
 
-    private List<PlayerData> players = new List<PlayerData>();
-    private int currentPlayerIndex = 0;
-    public PlayerData CurrentPlayer => players[currentPlayerIndex];
+    private List<NguoiChoi> danhSachNguoiChoi = new List<NguoiChoi>();
+    private int luotHienTai = 0;
+    public NguoiChoi NguoiChoiHienTai => danhSachNguoiChoi[luotHienTai];
 
-    // Theo dõi xem lượt này người chơi có được đi thêm không
-    private bool grantExtraTurn = false;
+    private bool duocDiThem = false;   // Được đi thêm khi ra 6 hoặc đá quân
+    private int  giaTriXucXac = 0;
+    public  int  GiaTriXucXac => giaTriXucXac;
 
-    // Xúc xắc lần này ra mấy
-    private int lastDiceValue = 0;
-    public int LastDiceValue => lastDiceValue;
-
-    // ----------------------------------------------------------
-    //  Movable tokens cache (sau khi tung xúc xắc)
-    // ----------------------------------------------------------
-    private List<Token> movableTokens = new List<Token>();
+    // Danh sách quân hợp lệ sau khi tung xúc xắc
+    private List<QuancoMovement> quanCoTheChon = new List<QuancoMovement>();
 
     // ============================================================
     //  UNITY LIFECYCLE
     // ============================================================
     private void Awake()
     {
-        // Singleton guard
-        if (Instance != null && Instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
+        if (Instance != null && Instance != this) { Destroy(gameObject); return; }
         Instance = this;
         DontDestroyOnLoad(gameObject);
     }
 
     private void Start()
     {
-        InitializePlayers();
-        StartGame();
+        KhoiTaoCacNguoiChoi();
+        BatDauGame();
     }
 
     // ============================================================
     //  KHỞI TẠO
     // ============================================================
-    private void InitializePlayers()
+    private void KhoiTaoCacNguoiChoi()
     {
-        players.Clear();
-        PlayerColor[] colors = (PlayerColor[])Enum.GetValues(typeof(PlayerColor));
-        for (int i = 0; i < Mathf.Min(numberOfPlayers, colors.Length); i++)
-        {
-            players.Add(new PlayerData(colors[i], isHuman: true));
-        }
-        Debug.Log($"[GameManager] Đã khởi tạo {players.Count} người chơi.");
+        danhSachNguoiChoi.Clear();
+        MauNguoiChoi[] cacMau = (MauNguoiChoi[])Enum.GetValues(typeof(MauNguoiChoi));
+        for (int i = 0; i < Mathf.Min(soNguoiChoi, cacMau.Length); i++)
+            danhSachNguoiChoi.Add(new NguoiChoi(cacMau[i]));
+
+        Debug.Log($"[GameManager] Đã khởi tạo {danhSachNguoiChoi.Count} người chơi.");
     }
 
-    public void StartGame()
+    public void BatDauGame()
     {
-        currentPlayerIndex = 0;
-        grantExtraTurn = false;
-        ChangeState(GameState.Wait_For_Roll);
+        luotHienTai = 0;
+        duocDiThem  = false;
+        DoiTrangThai(GameState.Wait_For_Roll);
     }
 
     // ============================================================
-    //  STATE MACHINE – Đổi trạng thái
+    //  STATE MACHINE
     // ============================================================
-    private void ChangeState(GameState newState)
+    private void DoiTrangThai(GameState trangThaiMoi)
     {
-        if (currentState == newState) return;
-
-        currentState = newState;
-        Debug.Log($"[GameManager] State → {newState} | Lượt: {CurrentPlayer.color}");
-        OnStateChanged?.Invoke(newState);
-
-        // Xử lý logic khi VÀO state mới
-        OnEnterState(newState);
+        if (currentState == trangThaiMoi) return;
+        currentState = trangThaiMoi;
+        Debug.Log($"[GameManager] State → {trangThaiMoi} | Lượt: {NguoiChoiHienTai.mau}");
+        OnStateChanged?.Invoke(trangThaiMoi);
+        XuLyKhiVaoTrangThai(trangThaiMoi);
     }
 
-    private void OnEnterState(GameState state)
+    private void XuLyKhiVaoTrangThai(GameState state)
     {
         switch (state)
         {
-            case GameState.Wait_For_Roll:
-                HandleWaitForRoll();
-                break;
-
-            case GameState.Rolling:
-                // DiceManager sẽ gọi OnDiceRollComplete() khi xong
-                break;
-
-            case GameState.Wait_For_Selection:
-                HandleWaitForSelection();
-                break;
-
-            case GameState.Moving:
-                // TokenLogic / animation sẽ gọi OnTokenMovementComplete() khi xong
-                break;
-
-            case GameState.Check_Win:
-                HandleCheckWin();
-                break;
-
-            case GameState.Game_Over:
-                HandleGameOver();
-                break;
+            case GameState.Wait_For_Roll:      XuLy_ChoTung();        break;
+            case GameState.Rolling:            /* DiceManager lo */   break;
+            case GameState.Wait_For_Selection: XuLy_ChoChon();        break;
+            case GameState.Moving:             /* QuancoMovement lo */ break;
+            case GameState.Check_Win:          XuLy_KiemTraThang();   break;
+            case GameState.Game_Over:          XuLy_KetThuc();        break;
         }
     }
 
     // ============================================================
-    //  HANDLERS cho từng state
+    //  HANDLERS
     // ============================================================
-
-    /// <summary>Chuẩn bị lượt mới, thông báo UI.</summary>
-    private void HandleWaitForRoll()
+    private void XuLy_ChoTung()
     {
-        grantExtraTurn = false;
-        // TODO: UIManager.Instance.ShowDiceButton(true);
-        Debug.Log($"[GameManager] Đến lượt {CurrentPlayer.color} – Nhấn tung xúc xắc!");
+        duocDiThem = false;
+        OnTurnChanged?.Invoke(NguoiChoiHienTai.mau); // Dev 3 cập nhật UI
+        Debug.Log($"[GameManager] Đến lượt {NguoiChoiHienTai.mau} – Nhấn tung xúc xắc!");
     }
 
-    /// <summary>Gọi từ nút UI hoặc input handler.</summary>
-    public void RequestDiceRoll()
+    /// <summary>Dev 3 gọi hàm này khi người chơi nhấn nút tung.</summary>
+    public void YeuCauTungXucXac()
     {
         if (currentState != GameState.Wait_For_Roll)
         {
-            Debug.LogWarning("[GameManager] Không thể tung xúc xắc lúc này.");
+            Debug.LogWarning("[GameManager] Chưa đến lúc tung xúc xắc!");
             return;
         }
-        ChangeState(GameState.Rolling);
-        diceManager.RollDice(OnDiceRollComplete); // DiceManager gọi callback
+        DoiTrangThai(GameState.Rolling);
+        diceManager.RollDice(KhiTungXong); // DiceManager callback
     }
 
-    /// <summary>Callback từ DiceManager sau khi animation tung xong.</summary>
-    public void OnDiceRollComplete(int diceValue)
+    /// <summary>Callback sau khi DiceManager tung xong.</summary>
+    private void KhiTungXong(int ketQua)
     {
-        lastDiceValue = diceValue;
-        Debug.Log($"[GameManager] {CurrentPlayer.color} tung được: {diceValue}");
+        giaTriXucXac = ketQua;
+        Debug.Log($"[GameManager] {NguoiChoiHienTai.mau} tung được: {ketQua}");
 
-        // Tính danh sách quân có thể đi
-        movableTokens = tokenLogic.GetMovableTokens(CurrentPlayer.color, diceValue);
+        // Hỏi TokenLogic: quân nào có thể đi?
+        quanCoTheChon = tokenLogic.LayQuanCoTheChon(NguoiChoiHienTai.mau, ketQua);
 
-        if (movableTokens.Count == 0)
+        if (quanCoTheChon.Count == 0)
         {
-            Debug.Log("[GameManager] Không có quân nào di chuyển được → chuyển lượt.");
-            EndTurn();
+            Debug.Log("[GameManager] Không có quân nào đi được → chuyển lượt.");
+            ChuyenLuot();
         }
         else
         {
-            ChangeState(GameState.Wait_For_Selection);
+            DoiTrangThai(GameState.Wait_For_Selection);
         }
     }
 
-    /// <summary>Khi vào Wait_For_Selection: highlight quân hợp lệ.</summary>
-    private void HandleWaitForSelection()
+    private void XuLy_ChoChon()
     {
-        // TODO: UIManager.Instance.HighlightTokens(movableTokens);
-        Debug.Log($"[GameManager] Có {movableTokens.Count} quân có thể đi. Chờ chọn...");
+        // Dev 3 sẽ highlight các quân trong quanCoTheChon
+        Debug.Log($"[GameManager] Có {quanCoTheChon.Count} quân có thể đi. Chờ chọn...");
 
-        // Nếu chỉ có 1 quân hợp lệ → tự động chọn
-        if (movableTokens.Count == 1)
-        {
-            SelectToken(movableTokens[0]);
-        }
+        // Tự động chọn nếu chỉ có 1 quân hợp lệ
+        if (quanCoTheChon.Count == 1)
+            ChonQuan(quanCoTheChon[0]);
     }
 
-    /// <summary>Người chơi bấm vào quân – gọi từ Token.OnClick().</summary>
-    public void SelectToken(Token token)
+    /// <summary>Dev 3 gọi khi người chơi click vào quân.</summary>
+    public void ChonQuan(QuancoMovement quan)
     {
         if (currentState != GameState.Wait_For_Selection)
         {
-            Debug.LogWarning("[GameManager] Không thể chọn quân lúc này.");
+            Debug.LogWarning("[GameManager] Chưa đến lúc chọn quân!");
             return;
         }
-
-        if (!movableTokens.Contains(token))
+        if (!quanCoTheChon.Contains(quan))
         {
-            Debug.LogWarning("[GameManager] Quân này không hợp lệ để đi.");
+            Debug.LogWarning("[GameManager] Quân này không hợp lệ!");
             return;
         }
 
-        // TODO: UIManager.Instance.ClearHighlights();
-        ChangeState(GameState.Moving);
-        tokenLogic.MoveToken(token, lastDiceValue, OnTokenMovementComplete);
+        DoiTrangThai(GameState.Moving);
+
+        // Gọi Dev 1 di chuyển, sau đó chờ flag dangDiChuyen = false
+        tokenLogic.ThucHienDiChuyen(quan, giaTriXucXac, KhiDiChuyenXong);
     }
 
-    /// <summary>Callback từ TokenLogic/animation khi quân đã đến nơi.</summary>
-    public void OnTokenMovementComplete(MoveResult result)
+    /// <summary>TokenLogic gọi callback này khi quân đã đến đích.</summary>
+    private void KhiDiChuyenXong(MoveResult ketQua)
     {
-        Debug.Log($"[GameManager] Di chuyển xong. Kết quả: {result}");
+        Debug.Log($"[GameManager] Di chuyển xong. Kết quả: {ketQua}");
 
-        // Kiểm tra có được đi thêm không
-        if (result == MoveResult.KickedOpponent || lastDiceValue == 6)
+        // Được đi thêm nếu ra 6 hoặc đá quân
+        if (ketQua == MoveResult.KickedOpponent || giaTriXucXac == 6)
         {
-            grantExtraTurn = true;
-            Debug.Log($"[GameManager] {CurrentPlayer.color} được đi thêm lượt! (lý do: {result}, xúc xắc: {lastDiceValue})");
+            duocDiThem = true;
+            Debug.Log($"[GameManager] {NguoiChoiHienTai.mau} được đi thêm lượt!");
         }
 
-        ChangeState(GameState.Check_Win);
+        // Cập nhật số quân về đích
+        if (ketQua == MoveResult.Reached_Home)
+        {
+            NguoiChoiHienTai.soQuanVeDich++;
+            Debug.Log($"[GameManager] {NguoiChoiHienTai.mau} đã có {NguoiChoiHienTai.soQuanVeDich} quân về đích.");
+        }
+
+        DoiTrangThai(GameState.Check_Win);
     }
 
-    /// <summary>Kiểm tra xem người chơi hiện tại có thắng chưa.</summary>
-    private void HandleCheckWin()
+    private void XuLy_KiemTraThang()
     {
-        if (tokenLogic.HasPlayerWon(CurrentPlayer.color))
+        if (tokenLogic.KiemTraThang(NguoiChoiHienTai.mau))
         {
-            CurrentPlayer.hasWon = true;
-            Debug.Log($"[GameManager] 🎉 {CurrentPlayer.color} đã thắng!");
-            ChangeState(GameState.Game_Over);
+            NguoiChoiHienTai.daThang = true;
+            DoiTrangThai(GameState.Game_Over);
             return;
         }
 
-        // Chưa thắng → chuyển lượt hoặc đi thêm
-        if (grantExtraTurn)
+        if (duocDiThem)
         {
-            Debug.Log($"[GameManager] {CurrentPlayer.color} chơi thêm lượt.");
-            ChangeState(GameState.Wait_For_Roll);
+            Debug.Log($"[GameManager] {NguoiChoiHienTai.mau} chơi thêm lượt.");
+            DoiTrangThai(GameState.Wait_For_Roll);
         }
         else
         {
-            EndTurn();
+            ChuyenLuot();
         }
     }
 
-    private void HandleGameOver()
+    private void XuLy_KetThuc()
     {
-        Debug.Log("[GameManager] GAME OVER!");
-        // TODO: UIManager.Instance.ShowGameOverScreen(CurrentPlayer.color);
+        Debug.Log($"[GameManager] 🎉 {NguoiChoiHienTai.mau} THẮNG!");
+        OnGameOver?.Invoke(NguoiChoiHienTai.mau); // Dev 3 hiện popup
     }
 
     // ============================================================
-    //  TURN MANAGER – Chuyển lượt
+    //  TURN MANAGER
     // ============================================================
-    private void EndTurn()
+    private void ChuyenLuot()
     {
-        currentPlayerIndex = GetNextActivePlayerIndex();
-        Debug.Log($"[GameManager] Chuyển sang lượt: {CurrentPlayer.color}");
-        ChangeState(GameState.Wait_For_Roll);
+        luotHienTai = TimNguoiChoiTiepTheo();
+        Debug.Log($"[GameManager] Chuyển sang lượt: {NguoiChoiHienTai.mau}");
+        DoiTrangThai(GameState.Wait_For_Roll);
     }
 
-    /// <summary>Tìm người chơi tiếp theo chưa thắng.</summary>
-    private int GetNextActivePlayerIndex()
+    private int TimNguoiChoiTiepTheo()
     {
-        int next = currentPlayerIndex;
-        int safetyCounter = 0;
-
+        int next = luotHienTai;
+        int guard = 0;
         do
         {
-            next = (next + 1) % players.Count;
-            safetyCounter++;
-            if (safetyCounter > players.Count) break; // tránh vòng lặp vô hạn
+            next = (next + 1) % danhSachNguoiChoi.Count;
+            guard++;
+            if (guard > danhSachNguoiChoi.Count) break;
         }
-        while (players[next].hasWon);
-
+        while (danhSachNguoiChoi[next].daThang);
         return next;
     }
 
     // ============================================================
-    //  PUBLIC HELPERS
+    //  PUBLIC HELPERS cho Dev 3, Dev 4
     // ============================================================
-    public List<PlayerData> GetAllPlayers() => players;
-
-    public bool IsCurrentPlayer(PlayerColor color) => CurrentPlayer.color == color;
+    public List<NguoiChoi> LayDanhSachNguoiChoi()  => danhSachNguoiChoi;
+    public List<QuancoMovement> LayQuanCoTheChon()  => quanCoTheChon;
+    public bool LaNguoiChoiHienTai(MauNguoiChoi mau) => NguoiChoiHienTai.mau == mau;
 }

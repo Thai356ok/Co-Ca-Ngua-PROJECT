@@ -4,230 +4,152 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // ============================================================
-//  ENUM: Kết quả sau một nước đi
+//  ENUM: Kết quả một nước đi – dùng chung với GameManager
 // ============================================================
 public enum MoveResult
 {
     Normal,          // Di chuyển bình thường
     KickedOpponent,  // Đá được quân đối thủ về chuồng
     Reached_Home,    // Quân về đích thành công
-    Blocked          // (dự phòng) bị chặn – không thể xảy ra ở luật chuẩn
 }
 
 // ============================================================
-//  CLASS: Dữ liệu một quân cờ
-// ============================================================
-[Serializable]
-public class Token
-{
-    public PlayerColor ownerColor;
-    public int tokenId;          // 0-3 (mỗi người có 4 quân)
-
-    // -1 = đang trong chuồng (chưa ra quân)
-    // 0..55 = vị trí trên bàn cờ chính (vòng ngoài, 56 ô)
-    // 56..59 = đường về đích riêng (4 ô straight)
-    // 60 = đã về đích hoàn toàn
-    public int boardPosition = -1;
-
-    public bool IsInBase   => boardPosition == -1;
-    public bool IsFinished => boardPosition == 60;
-    public bool IsOnBoard  => boardPosition >= 0 && boardPosition < 60;
-
-    // Vị trí bắt đầu (start cell) trên vòng ngoài – mỗi màu khác nhau
-    // Quy ước: Red=0, Blue=14, Green=28, Yellow=42
-    public static int GetStartPosition(PlayerColor color) => (int)color * 14;
-
-    // Ô an toàn: 4 ô start của từng màu + 4 ô ngay trước cổng về
-    private static readonly HashSet<int> SafePositions = new HashSet<int> { 0, 8, 14, 22, 28, 36, 42, 50 };
-    public static bool IsSafeCell(int pos) => SafePositions.Contains(pos % 56);
-
-    public Token(PlayerColor owner, int id)
-    {
-        ownerColor = owner;
-        tokenId = id;
-        boardPosition = -1;
-    }
-}
-
-// ============================================================
-//  TOKENLOGIC: Rule Engine + Move Execution
+//  TOKENLOGIC: Rule Engine – giao tiếp trực tiếp với QuancoMovement (Dev 1)
 // ============================================================
 public class TokenLogic : MonoBehaviour
 {
     // ----------------------------------------------------------
-    //  Board constants
+    //  Constants – phải khớp với Dev 1
     // ----------------------------------------------------------
-    private const int BOARD_LOOP_LENGTH   = 56; // Số ô trên vòng ngoài
-    private const int HOME_STRETCH_LENGTH = 4;  // Số ô đường về đích
-    private const int FINISHED_POSITION   = 60; // Quân về đích hoàn toàn
-    private const int TOKENS_PER_PLAYER   = 4;
-    private const int TOKENS_TO_WIN       = 4;  // Phải đưa đủ 4 quân về đích
+    private const int TONG_O_VONG_NGOAI  = 56; // Dev 1 dùng % 56
+    private const int SO_BUOC_VAO_CHUONG = 55; // Dev 1: soBuocDaDi == 55 thì rẽ vào chuồng
+    private const int SO_BAC_CHUONG      = 6;  // 6 bậc chuồng đích
+    private const int SO_QUAN_MOI_MAU    = 4;
+    private const int SO_QUAN_PHAI_VE    = 4;
+
+    // Ô an toàn trên vòng tròn chung (trùng với vị trí xuất phát 4 màu + 4 ô giữa)
+    private static readonly HashSet<int> OAnToan = new HashSet<int> { 0, 8, 14, 22, 28, 36, 42, 50 };
 
     // ----------------------------------------------------------
-    //  Tất cả quân trên bàn – khởi tạo từ BoardManager hoặc đây
+    //  Quản lý tất cả quân – key là MauNguoiChoi
+    //  Lấy QuancoMovement từ Scene bằng tag hoặc kéo thả
     // ----------------------------------------------------------
-    private Dictionary<PlayerColor, List<Token>> allTokens = new Dictionary<PlayerColor, List<Token>>();
+    [Header("Kéo thả 4 nhóm quân vào đây (theo thứ tự XanhLa/Vang/XanhDuong/Do)")]
+    [SerializeField] private List<QuancoMovement> quanXanhLa   = new List<QuancoMovement>();
+    [SerializeField] private List<QuancoMovement> quanVang      = new List<QuancoMovement>();
+    [SerializeField] private List<QuancoMovement> quanXanhDuong = new List<QuancoMovement>();
+    [SerializeField] private List<QuancoMovement> quanDo        = new List<QuancoMovement>();
 
     // ============================================================
-    //  KHỞI TẠO
+    //  RULE 1: Lấy danh sách quân CÓ THỂ ĐI với giá trị xúc xắc
     // ============================================================
-    private void Awake()
+    public List<QuancoMovement> LayQuanCoTheChon(MauNguoiChoi mau, int xucXac)
     {
-        InitializeAllTokens();
+        var danhSach = new List<QuancoMovement>();
+        foreach (var quan in LayQuanTheoMau(mau))
+        {
+            if (CoTheChon(quan, xucXac))
+                danhSach.Add(quan);
+        }
+        return danhSach;
     }
 
-    private void InitializeAllTokens()
+    /// <summary>Kiểm tra một quân có hợp lệ để đi không.</summary>
+    private bool CoTheChon(QuancoMovement quan, int xucXac)
     {
-        foreach (PlayerColor color in Enum.GetValues(typeof(PlayerColor)))
-        {
-            var list = new List<Token>();
-            for (int i = 0; i < TOKENS_PER_PLAYER; i++)
-                list.Add(new Token(color, i));
-            allTokens[color] = list;
-        }
-        Debug.Log("[TokenLogic] Đã khởi tạo tất cả quân cờ.");
-    }
+        // --- Đang trong chuồng chờ (chưa ra quân) ---
+        if (quan.viTriHienTai == -1)
+            return xucXac == 6; // Chỉ ra được khi ra 6
 
-    // ============================================================
-    //  RULE 1: Lấy danh sách quân CÓ THỂ đi với giá trị xúc xắc
-    // ============================================================
-    public List<Token> GetMovableTokens(PlayerColor color, int diceValue)
-    {
-        var movable = new List<Token>();
-        var tokens  = allTokens[color];
-
-        foreach (var token in tokens)
-        {
-            if (CanMoveToken(token, diceValue))
-                movable.Add(token);
-        }
-
-        return movable;
-    }
-
-    /// <summary>Kiểm tra một quân cụ thể có được phép đi không.</summary>
-    private bool CanMoveToken(Token token, int diceValue)
-    {
-        // --- Trường hợp 1: Quân đang trong chuồng ---
-        if (token.IsInBase)
-        {
-            // Chỉ ra được khi đổ ra 6
-            return diceValue == 6;
-        }
-
-        // --- Trường hợp 2: Quân đã về đích ---
-        if (token.IsFinished)
+        // --- Đã về đích hoàn toàn ---
+        if (quan.dangOChuongDich && quan.bacChuongHienTai >= SO_BAC_CHUONG)
             return false;
 
-        // --- Trường hợp 3: Quân đang trên bàn ---
-        int targetPos = CalculateTargetPosition(token, diceValue);
+        // --- Đang trong đường chuồng đích ---
+        if (quan.dangOChuongDich)
+        {
+            // Không được vượt quá số bậc chuồng
+            return (quan.bacChuongHienTai + xucXac) <= SO_BAC_CHUONG;
+        }
 
-        // Không được vượt quá đích (không thể đi nếu bước quá số ô còn lại)
-        if (targetPos < 0)
-            return false;
+        // --- Đang trên vòng tròn chung ---
+        // Kiểm tra có vừa đủ bước vào chuồng không (không vượt)
+        int buocConLaiDenCua = SO_BUOC_VAO_CHUONG - quan.soBuocDaDi;
+        if (xucXac > buocConLaiDenCua)
+        {
+            // Bước vào đường chuồng – kiểm tra không vượt 6 bậc
+            int buocTrongChuong = xucXac - buocConLaiDenCua;
+            return buocTrongChuong <= SO_BAC_CHUONG;
+        }
 
-        return true;
+        return true; // Đi bình thường trên vòng ngoài
     }
 
     // ============================================================
-    //  RULE 2: Tính vị trí đích sau khi đi `steps` bước
-    //          Trả về -1 nếu không hợp lệ (vượt đích)
+    //  THỰC HIỆN DI CHUYỂN – Gọi BatDauDiChuyen của Dev 1
+    //  Chờ flag dangDiChuyen = false rồi mới gọi callback
     // ============================================================
-    private int CalculateTargetPosition(Token token, int steps)
+    public void ThucHienDiChuyen(QuancoMovement quan, int xucXac, Action<MoveResult> onComplete)
     {
-        int currentPos = token.boardPosition;
-        int startPos   = Token.GetStartPosition(token.ownerColor);
+        StartCoroutine(ChoDiChuyenRoiKiemTra(quan, xucXac, onComplete));
+    }
 
-        // Tính ô "cổng vào" đường về đích của màu này
-        // Mỗi màu: cổng = startPos - 1 (mod 56), tức là 1 ô trước start
-        int gatePos = (startPos - 1 + BOARD_LOOP_LENGTH) % BOARD_LOOP_LENGTH;
+    private IEnumerator ChoDiChuyenRoiKiemTra(QuancoMovement quan, int xucXac, Action<MoveResult> onComplete)
+    {
+        // Gọi Dev 1 di chuyển
+        quan.BatDauDiChuyen(xucXac);
 
-        // Số bước còn lại để đến cổng (tính theo chiều đi)
-        int stepsToGate = (gatePos - currentPos + BOARD_LOOP_LENGTH) % BOARD_LOOP_LENGTH;
+        // Chờ cho đến khi Dev 1 báo xong (dangDiChuyen = false)
+        yield return new WaitUntil(() => !quan.dangDiChuyen);
 
-        if (steps <= stepsToGate)
+        // --- Kiểm tra kết quả sau khi đến nơi ---
+        MoveResult ketQua = MoveResult.Normal;
+
+        if (quan.dangOChuongDich && quan.bacChuongHienTai >= SO_BAC_CHUONG)
         {
-            // Chưa vào đường về đích → đi trên vòng ngoài bình thường
-            return (currentPos + steps) % BOARD_LOOP_LENGTH;
+            // Về đích hoàn toàn
+            ketQua = MoveResult.Reached_Home;
+            Debug.Log($"[TokenLogic] 🏠 Quân {quan.mauCuaToi} về đích!");
         }
-        else
+        else if (!quan.dangOChuongDich)
         {
-            // Đang vào / trong đường về đích
-            int homeProgress = steps - stepsToGate; // Bước vào đường riêng
-            int homePos = BOARD_LOOP_LENGTH + homeProgress; // 56,57,58,59 + 1 = done (60)
-
-            if (homePos > FINISHED_POSITION)
-                return -1; // Không được đi (cần đúng số, không được vượt)
-
-            return homePos;
+            // Kiểm tra có đá quân đối thủ không
+            ketQua = KiemTraDaQuan(quan);
         }
+
+        onComplete?.Invoke(ketQua);
     }
 
     // ============================================================
-    //  THỰC HIỆN DI CHUYỂN – Gọi sau khi người chơi đã chọn quân
+    //  RULE 2: Kiểm tra đá quân đối thủ tại ô hiện tại
     // ============================================================
-    public void MoveToken(Token token, int diceValue, Action<MoveResult> onComplete)
+    private MoveResult KiemTraDaQuan(QuancoMovement quanVuaMo)
     {
-        MoveResult result = MoveResult.Normal;
+        int viTriHienTai = quanVuaMo.viTriHienTai;
 
-        if (token.IsInBase && diceValue == 6)
-        {
-            // --- Ra quân ---
-            int startPos = Token.GetStartPosition(token.ownerColor);
-            token.boardPosition = startPos;
-            Debug.Log($"[TokenLogic] {token.ownerColor} Ra quân #{token.tokenId} → ô {startPos}");
-            result = CheckCellConflict(token);
-        }
-        else
-        {
-            // --- Di chuyển bình thường ---
-            int targetPos = CalculateTargetPosition(token, diceValue);
-            token.boardPosition = targetPos;
-            Debug.Log($"[TokenLogic] {token.ownerColor} Quân #{token.tokenId} → ô {targetPos}");
-
-            if (targetPos == FINISHED_POSITION)
-            {
-                result = MoveResult.Reached_Home;
-                Debug.Log($"[TokenLogic] 🏠 {token.ownerColor} Quân #{token.tokenId} về đích!");
-            }
-            else
-            {
-                result = CheckCellConflict(token);
-            }
-        }
-
-        // TODO: Trigger animation, sau đó gọi callback
-        // Hiện tại gọi ngay (sẽ được Dev animation thay thế)
-        onComplete?.Invoke(result);
-    }
-
-    // ============================================================
-    //  RULE 3: Kiểm tra xung đột tại ô đích
-    //          Đá quân đối thủ / bị chặn bởi quân cùng màu
-    // ============================================================
-    private MoveResult CheckCellConflict(Token movedToken)
-    {
-        int pos = movedToken.boardPosition;
-
-        // Ô an toàn → không đá được, cũng không bị đá
-        if (Token.IsSafeCell(pos))
-        {
-            Debug.Log($"[TokenLogic] Ô {pos} là ô an toàn, không có xung đột.");
+        // Ô an toàn → không đá được
+        if (OAnToan.Contains(viTriHienTai))
             return MoveResult.Normal;
-        }
 
-        // Duyệt tất cả quân của các màu khác
-        foreach (var kvp in allTokens)
+        // Duyệt tất cả quân màu khác
+        foreach (MauNguoiChoi mau in Enum.GetValues(typeof(MauNguoiChoi)))
         {
-            if (kvp.Key == movedToken.ownerColor) continue;
+            // Bỏ qua cùng màu
+            if (mau == (MauNguoiChoi)(int)quanVuaMo.mauCuaToi) continue;
 
-            foreach (var opponentToken in kvp.Value)
+            foreach (var quanDich in LayQuanTheoMau(mau))
             {
-                if (opponentToken.boardPosition == pos && !opponentToken.IsFinished)
+                if (quanDich.viTriHienTai == viTriHienTai && !quanDich.dangOChuongDich)
                 {
-                    // Đá quân đối thủ về chuồng
-                    opponentToken.boardPosition = -1;
-                    Debug.Log($"[TokenLogic] 💥 {movedToken.ownerColor} đá quân {opponentToken.ownerColor} #{opponentToken.tokenId} về chuồng!");
+                    // Đá quân về chuồng
+                    quanDich.viTriHienTai    = -1;
+                    quanDich.soBuocDaDi      = 0;
+                    quanDich.dangOChuongDich = false;
+                    quanDich.bacChuongHienTai = 0;
+                    // Đưa quân về vị trí vật lý chuồng ban đầu
+                    quanDich.transform.position = LayViTriChuongBanDau(quanDich);
+
+                    Debug.Log($"[TokenLogic] 💥 {quanVuaMo.mauCuaToi} đá quân {quanDich.mauCuaToi} về chuồng!");
                     return MoveResult.KickedOpponent;
                 }
             }
@@ -237,42 +159,52 @@ public class TokenLogic : MonoBehaviour
     }
 
     // ============================================================
-    //  RULE 4: Kiểm tra điều kiện THẮNG
+    //  RULE 3: Kiểm tra điều kiện THẮNG
     // ============================================================
-    public bool HasPlayerWon(PlayerColor color)
+    public bool KiemTraThang(MauNguoiChoi mau)
     {
-        int finishedCount = 0;
-        foreach (var token in allTokens[color])
+        int soQuanVeDich = 0;
+        foreach (var quan in LayQuanTheoMau(mau))
         {
-            if (token.IsFinished) finishedCount++;
+            if (quan.dangOChuongDich && quan.bacChuongHienTai >= SO_BAC_CHUONG)
+                soQuanVeDich++;
         }
-        return finishedCount >= TOKENS_TO_WIN;
+        return soQuanVeDich >= SO_QUAN_PHAI_VE;
     }
 
     // ============================================================
-    //  PUBLIC HELPERS – Các hệ thống khác truy vấn
+    //  HELPERS
     // ============================================================
 
-    /// <summary>Lấy tất cả quân của một màu.</summary>
-    public List<Token> GetTokens(PlayerColor color) => allTokens[color];
-
-    /// <summary>Lấy tất cả quân đang ở một ô cụ thể.</summary>
-    public List<Token> GetTokensAtPosition(int position)
+    /// <summary>Map MauNguoiChoi → danh sách QuancoMovement tương ứng.</summary>
+    public List<QuancoMovement> LayQuanTheoMau(MauNguoiChoi mau)
     {
-        var result = new List<Token>();
-        foreach (var list in allTokens.Values)
-            foreach (var token in list)
-                if (token.boardPosition == position)
-                    result.Add(token);
-        return result;
+        switch (mau)
+        {
+            case MauNguoiChoi.XanhLa:    return quanXanhLa;
+            case MauNguoiChoi.Vang:      return quanVang;
+            case MauNguoiChoi.XanhDuong: return quanXanhDuong;
+            case MauNguoiChoi.Do:        return quanDo;
+            default: return new List<QuancoMovement>();
+        }
     }
 
-    /// <summary>Đếm quân đã về đích của một người chơi.</summary>
-    public int GetFinishedTokenCount(PlayerColor color)
+    /// <summary>Lấy vị trí vật lý chuồng ban đầu để reset quân bị đá.</summary>
+    private Vector3 LayViTriChuongBanDau(QuancoMovement quan)
+    {
+        // TODO: Dev 1 / BoardManager cung cấp vị trí chuồng ban đầu của từng quân
+        // Tạm thời dùng vị trí hiện tại (sẽ update khi có data từ Dev 1)
+        Debug.LogWarning($"[TokenLogic] Cần Dev 1 cung cấp tọa độ chuồng ban đầu cho {quan.mauCuaToi}!");
+        return quan.transform.position;
+    }
+
+    /// <summary>Lấy số quân đã về đích của một màu.</summary>
+    public int DemQuanVeDich(MauNguoiChoi mau)
     {
         int count = 0;
-        foreach (var token in allTokens[color])
-            if (token.IsFinished) count++;
+        foreach (var quan in LayQuanTheoMau(mau))
+            if (quan.dangOChuongDich && quan.bacChuongHienTai >= SO_BAC_CHUONG)
+                count++;
         return count;
     }
 }
