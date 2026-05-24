@@ -1,47 +1,51 @@
 ﻿using UnityEngine;
-using TMPro; // Thư viện dùng Text của Unity
-using UnityEngine.UI; // Thư viện để xài Nút bấm (Button)
+using TMPro;
+using UnityEngine.UI; // Thư viện bắt buộc để dùng UI Image và Button
 
 public class GameUIPanel : BasePanel
 {
-    [Header("UI Elements")]
+    [Header("Giao diện UI")]
     public TextMeshProUGUI txtTurnInfo;
     public Button btnRollDice;
 
-    // Ghi đè phương thức từ class cha 
-    public override void ShowPanel()
-    {
-        base.ShowPanel();
-        txtTurnInfo.text = "Trò chơi bắt đầu!";
-    }
+    // TIÊU CHÍ: Thêm biến để điều khiển cái màn chiếu hình ảnh
+    public Image imgDiceDisplay;
 
-    // Khi UI bật lên -> Cắm ăng-ten lắng nghe sự kiện click chuột
+    [Header("Dữ liệu Xúc Xắc")]
+    // Khai báo một Mảng (Array) để chứa 6 bức ảnh mặt xúc xắc
+    public Sprite[] diceFaces;
+
     private void OnEnable()
     {
-        InputManager.OnObjectClicked += HandleObjectClicked;
+        InputManager.OnObjectClicked += UpdateUIText;
     }
 
-    // Khi UI tắt đi -> Phải rút ăng-ten để không bị lỗi tràn bộ nhớ
     private void OnDisable()
     {
-        InputManager.OnObjectClicked -= HandleObjectClicked;
+        InputManager.OnObjectClicked -= UpdateUIText;
     }
 
-    // Hàm này sẽ TỰ ĐỘNG CHẠY khi InputManager "Có người vừa click!"
-    private void HandleObjectClicked(GameObject clickedObj)
+    private void UpdateUIText(GameObject clickedObj)
     {
-        txtTurnInfo.text = "Bạn vừa nhấn vào: " + clickedObj.name;
-        txtTurnInfo.color = Color.green; // Đổi màu chữ cho sinh động
+        txtTurnInfo.text = "Bạn vừa click vào: " + clickedObj.name;
+        txtTurnInfo.color = Color.green;
     }
 
-    // Hàm này bắt buộc phải có chữ "public" để Unity có thể nhìn thấy và gán vào nút bấm
+    // Hàm gắn vào nút bấm
     public void OnRollDiceClicked()
-    {      
+    {
+        // Random từ 1 đến 6
         int diceResult = Random.Range(1, 7);
 
-        // Cập nhật lên màn hình UI
+        // Cập nhật chữ
         txtTurnInfo.text = "Xúc xắc đổ ra: " + diceResult + " điểm!";
         txtTurnInfo.color = Color.yellow;
+
+        // CẬP NHẬT HÌNH ẢNH:
+        // Vì Mảng trong C# bắt đầu từ vị trí số 0 (Index 0).
+        // Nên xúc xắc ra 1 điểm -> Lấy ảnh ở vị trí [0]. Ra 6 điểm -> Lấy ảnh ở vị trí [5].
+        // Công thức sẽ là: diceResult - 1
+        imgDiceDisplay.sprite = diceFaces[diceResult - 1];
 
         Debug.Log("Đã đổ xúc xắc ra số: " + diceResult);
     }
