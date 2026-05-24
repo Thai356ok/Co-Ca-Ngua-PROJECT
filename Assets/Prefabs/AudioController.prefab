@@ -47,7 +47,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.4
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -242,8 +242,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::AudioManager
   bgmSource: {fileID: 4093191039060973923}
   sfxSource: {fileID: 2875422523408833838}
-  bgmMain: {fileID: 0}
-  sfxDiceRoll: {fileID: 0}
-  sfxTokenMove: {fileID: 0}
-  sfxTokenKick: {fileID: 0}
-  sfxWin: {fileID: 0}
+  bgmMain: {fileID: 8300000, guid: 55cf4365adc8bf745a6abbcc8b611bf4, type: 3}
+  sfxDiceRoll: {fileID: 8300000, guid: 716de4f001462d64494db2ef54d19b9d, type: 3}
+  sfxTokenMove: {fileID: 8300000, guid: 86a7a4a69dcc3c44eb4964ac82a17311, type: 3}
+  sfxTokenKick: {fileID: 8300000, guid: 967567272a9a1a14f98ffc064898bdbc, type: 3}
+  sfxWin: {fileID: 8300000, guid: 5f4cc8e7f33abcd4080932f17f6b5246, type: 3}
