@@ -95,7 +95,6 @@ public class GameManager : MonoBehaviour
     {
         if (Instance != null && Instance != this) { Destroy(gameObject); return; }
         Instance = this;
-        DontDestroyOnLoad(gameObject);
     }
 
     private void Start()
@@ -226,7 +225,16 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log($"[GameManager] Di chuyển xong. Kết quả: {ketQua}");
 
-        // Được đi thêm nếu ra 6 hoặc đá quân
+        // LUẬT MỚI: Vừa ra chuồng → được tung thêm ngay lập tức (không tính lượt)
+        if (ketQua == MoveResult.ExitedBase)
+        {
+            duocDiThem = true;
+            Debug.Log($"[GameManager] {NguoiChoiHienTai.mau} vừa ra chuồng → tung thêm!");
+            DoiTrangThai(GameState.Check_Win);
+            return;
+        }
+
+        // LUẬT MỚI: Chỉ được đi thêm khi ra số 6 hoặc đá quân đối thủ
         if (ketQua == MoveResult.KickedOpponent || giaTriXucXac == 6)
         {
             duocDiThem = true;
