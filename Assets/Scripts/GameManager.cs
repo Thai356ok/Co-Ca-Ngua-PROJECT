@@ -159,8 +159,8 @@ public class GameManager : MonoBehaviour
         Debug.Log($"[GameManager] Đến lượt {NguoiChoiHienTai.mau} – Nhấn tung xúc xắc!");
     }
 
-    /// <summary>Dev 3 gọi hàm này khi người chơi nhấn nút tung.</summary>
-    public void YeuCauTungXucXac()
+    /// Dev 3 gọi hàm này khi người chơi nhấn nút tung.
+    public void YeuCauTungXucXac(int ketQuaTuUI)
     {
         if (currentState != GameState.Wait_For_Roll)
         {
@@ -168,7 +168,7 @@ public class GameManager : MonoBehaviour
             return;
         }
         DoiTrangThai(GameState.Rolling);
-        diceManager.RollDice(KhiTungXong); // DiceManager callback
+        KhiTungXong(ketQuaTuUI);
     }
 
     /// <summary>Callback sau khi DiceManager tung xong.</summary>

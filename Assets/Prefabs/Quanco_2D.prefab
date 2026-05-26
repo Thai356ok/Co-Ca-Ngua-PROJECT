@@ -81,6 +81,7 @@ GameObject:
   - component: {fileID: 575397228768984241}
   - component: {fileID: 4532210259168803704}
   - component: {fileID: 4034372075997883197}
+  - component: {fileID: 3669968000813557736}
   m_Layer: 0
   m_Name: 'Quan_1 '
   m_TagString: Untagged
@@ -180,6 +181,52 @@ MonoBehaviour:
   dangOChuongDich: 0
   bacChuongHienTai: 0
   dangDiChuyen: 0
+--- !u!61 &3669968000813557736
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 802357158550743075}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 2.02, y: 3.19}
+    newSize: {x: 2.09, y: 3.03}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 2.02, y: 3.19}
+  m_EdgeRadius: 0
 --- !u!1 &1346214902405223931
 GameObject:
   m_ObjectHideFlags: 0
@@ -191,6 +238,7 @@ GameObject:
   - component: {fileID: 9070825974846527338}
   - component: {fileID: 6191924318206765463}
   - component: {fileID: 1999589692965849697}
+  - component: {fileID: 5851250669510423636}
   m_Layer: 0
   m_Name: Quan_2
   m_TagString: Untagged
@@ -290,6 +338,52 @@ MonoBehaviour:
   dangOChuongDich: 0
   bacChuongHienTai: 0
   dangDiChuyen: 0
+--- !u!61 &5851250669510423636
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1346214902405223931}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 2.02, y: 3.2}
+    newSize: {x: 2.09, y: 3.03}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 2.02, y: 3.2}
+  m_EdgeRadius: 0
 --- !u!1 &1923861207663355933
 GameObject:
   m_ObjectHideFlags: 0
@@ -301,6 +395,7 @@ GameObject:
   - component: {fileID: 158264673302007185}
   - component: {fileID: 5583195126319843984}
   - component: {fileID: 8645169393753084137}
+  - component: {fileID: 7089555978048945237}
   m_Layer: 0
   m_Name: Quan_4
   m_TagString: Untagged
@@ -400,6 +495,52 @@ MonoBehaviour:
   dangOChuongDich: 0
   bacChuongHienTai: 0
   dangDiChuyen: 0
+--- !u!61 &7089555978048945237
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1923861207663355933}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 2.02, y: 3.2}
+    newSize: {x: 2.09, y: 3.03}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 2.02, y: 3.2}
+  m_EdgeRadius: 0
 --- !u!1 &1933393252958249749
 GameObject:
   m_ObjectHideFlags: 0
@@ -411,6 +552,7 @@ GameObject:
   - component: {fileID: 1307201611183330175}
   - component: {fileID: 4096466459759681679}
   - component: {fileID: 4230690855741812649}
+  - component: {fileID: 4652922999164694120}
   m_Layer: 0
   m_Name: Quan_3
   m_TagString: Untagged
@@ -510,6 +652,52 @@ MonoBehaviour:
   dangOChuongDich: 0
   bacChuongHienTai: 0
   dangDiChuyen: 0
+--- !u!61 &4652922999164694120
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1933393252958249749}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 2.17, y: 3.21}
+    newSize: {x: 2.09, y: 3.03}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 2.17, y: 3.21}
+  m_EdgeRadius: 0
 --- !u!1 &2469164624955849711
 GameObject:
   m_ObjectHideFlags: 0
@@ -521,6 +709,7 @@ GameObject:
   - component: {fileID: 4222364785849932811}
   - component: {fileID: 6274287948904156651}
   - component: {fileID: 6937232246288278462}
+  - component: {fileID: 3318490784192331150}
   m_Layer: 0
   m_Name: Quan_2
   m_TagString: Untagged
@@ -620,6 +809,52 @@ MonoBehaviour:
   dangOChuongDich: 0
   bacChuongHienTai: 0
   dangDiChuyen: 0
+--- !u!61 &3318490784192331150
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2469164624955849711}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 2.02, y: 3.19}
+    newSize: {x: 2.09, y: 3.03}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 2.02, y: 3.19}
+  m_EdgeRadius: 0
 --- !u!1 &3638537213469841704
 GameObject:
   m_ObjectHideFlags: 0
@@ -631,6 +866,7 @@ GameObject:
   - component: {fileID: 248576891956663708}
   - component: {fileID: 556660631474806691}
   - component: {fileID: 293405748671072658}
+  - component: {fileID: 6661339911627014472}
   m_Layer: 0
   m_Name: Quan_2
   m_TagString: Untagged
@@ -730,6 +966,52 @@ MonoBehaviour:
   dangOChuongDich: 0
   bacChuongHienTai: 0
   dangDiChuyen: 0
+--- !u!61 &6661339911627014472
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3638537213469841704}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 2.17, y: 3.21}
+    newSize: {x: 2.09, y: 3.03}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 2.17, y: 3.21}
+  m_EdgeRadius: 0
 --- !u!1 &4364401822648255288
 GameObject:
   m_ObjectHideFlags: 0
@@ -741,6 +1023,7 @@ GameObject:
   - component: {fileID: 3920388796187965551}
   - component: {fileID: 9029966482714878909}
   - component: {fileID: 2440831302803480695}
+  - component: {fileID: 1219637431171769406}
   m_Layer: 0
   m_Name: Quan_1
   m_TagString: Untagged
@@ -840,6 +1123,52 @@ MonoBehaviour:
   dangOChuongDich: 0
   bacChuongHienTai: 0
   dangDiChuyen: 0
+--- !u!61 &1219637431171769406
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4364401822648255288}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 2.17, y: 3.21}
+    newSize: {x: 2.09, y: 3.03}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 2.17, y: 3.21}
+  m_EdgeRadius: 0
 --- !u!1 &4757474201026829682
 GameObject:
   m_ObjectHideFlags: 0
@@ -956,6 +1285,7 @@ GameObject:
   - component: {fileID: 1706474903561958586}
   - component: {fileID: 4539462117870128741}
   - component: {fileID: 6764149172570710768}
+  - component: {fileID: 9141489187465075311}
   m_Layer: 0
   m_Name: Quan_3
   m_TagString: Untagged
@@ -1055,6 +1385,52 @@ MonoBehaviour:
   dangOChuongDich: 0
   bacChuongHienTai: 0
   dangDiChuyen: 0
+--- !u!61 &9141489187465075311
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6253416309365349159}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 2.02, y: 3.19}
+    newSize: {x: 2.09, y: 3.03}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 2.02, y: 3.19}
+  m_EdgeRadius: 0
 --- !u!1 &6605464589665906938
 GameObject:
   m_ObjectHideFlags: 0
@@ -1066,6 +1442,7 @@ GameObject:
   - component: {fileID: 3324217259083159850}
   - component: {fileID: 1363987530621242153}
   - component: {fileID: 1248076399767028566}
+  - component: {fileID: 4255579860365974836}
   m_Layer: 0
   m_Name: Quan_4
   m_TagString: Untagged
@@ -1165,6 +1542,52 @@ MonoBehaviour:
   dangOChuongDich: 0
   bacChuongHienTai: 0
   dangDiChuyen: 0
+--- !u!61 &4255579860365974836
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6605464589665906938}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 2.02, y: 3.19}
+    newSize: {x: 2.09, y: 3.03}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 2.02, y: 3.19}
+  m_EdgeRadius: 0
 --- !u!1 &7084275731144473953
 GameObject:
   m_ObjectHideFlags: 0
@@ -1176,6 +1599,7 @@ GameObject:
   - component: {fileID: 3169101951938266803}
   - component: {fileID: 2832747475933831983}
   - component: {fileID: 6748230608661143653}
+  - component: {fileID: 5763304255538867520}
   m_Layer: 0
   m_Name: Quan_2
   m_TagString: Untagged
@@ -1275,6 +1699,52 @@ MonoBehaviour:
   dangOChuongDich: 0
   bacChuongHienTai: 0
   dangDiChuyen: 0
+--- !u!61 &5763304255538867520
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7084275731144473953}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 2.09, y: 3.03}
+    newSize: {x: 2.09, y: 3.03}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 2.09, y: 3.03}
+  m_EdgeRadius: 0
 --- !u!1 &7321512445069569138
 GameObject:
   m_ObjectHideFlags: 0
@@ -1286,6 +1756,7 @@ GameObject:
   - component: {fileID: 9143276145891536009}
   - component: {fileID: 1975833045695116300}
   - component: {fileID: 3255265801654237559}
+  - component: {fileID: 7106575467092942169}
   m_Layer: 0
   m_Name: Quan_3
   m_TagString: Untagged
@@ -1385,6 +1856,52 @@ MonoBehaviour:
   dangOChuongDich: 0
   bacChuongHienTai: 0
   dangDiChuyen: 0
+--- !u!61 &7106575467092942169
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7321512445069569138}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 2.02, y: 3.2}
+    newSize: {x: 2.09, y: 3.03}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 2.02, y: 3.2}
+  m_EdgeRadius: 0
 --- !u!1 &7701583309144074771
 GameObject:
   m_ObjectHideFlags: 0
@@ -1396,6 +1913,7 @@ GameObject:
   - component: {fileID: 4349091095547842379}
   - component: {fileID: 8349525271182252069}
   - component: {fileID: 8309898875645256201}
+  - component: {fileID: 8990620097321399407}
   m_Layer: 0
   m_Name: Quan_1
   m_TagString: Untagged
@@ -1495,6 +2013,52 @@ MonoBehaviour:
   dangOChuongDich: 0
   bacChuongHienTai: 0
   dangDiChuyen: 0
+--- !u!61 &8990620097321399407
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7701583309144074771}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 2.09, y: 3.03}
+    newSize: {x: 2.09, y: 3.03}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 2.09, y: 3.03}
+  m_EdgeRadius: 0
 --- !u!1 &7821961484199749253
 GameObject:
   m_ObjectHideFlags: 0
@@ -1506,6 +2070,7 @@ GameObject:
   - component: {fileID: 4777380370396233054}
   - component: {fileID: 1974880240362898875}
   - component: {fileID: 2881866409708561751}
+  - component: {fileID: 1939700546959541102}
   m_Layer: 0
   m_Name: Quan_4
   m_TagString: Untagged
@@ -1605,6 +2170,52 @@ MonoBehaviour:
   dangOChuongDich: 0
   bacChuongHienTai: 0
   dangDiChuyen: 0
+--- !u!61 &1939700546959541102
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7821961484199749253}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 2.09, y: 3.03}
+    newSize: {x: 2.09, y: 3.03}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 2.09, y: 3.03}
+  m_EdgeRadius: 0
 --- !u!1 &8614369042711803831
 GameObject:
   m_ObjectHideFlags: 0
@@ -1616,6 +2227,7 @@ GameObject:
   - component: {fileID: 6361706678983222449}
   - component: {fileID: 6523052922681890362}
   - component: {fileID: 92512618393531592}
+  - component: {fileID: 1449930712779746755}
   m_Layer: 0
   m_Name: 'Quan_1 '
   m_TagString: Untagged
@@ -1715,6 +2327,52 @@ MonoBehaviour:
   dangOChuongDich: 0
   bacChuongHienTai: 0
   dangDiChuyen: 0
+--- !u!61 &1449930712779746755
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8614369042711803831}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 2.02, y: 3.2}
+    newSize: {x: 2.09, y: 3.03}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 2.02, y: 3.2}
+  m_EdgeRadius: 0
 --- !u!1 &8879917186080402225
 GameObject:
   m_ObjectHideFlags: 0
@@ -1726,6 +2384,7 @@ GameObject:
   - component: {fileID: 7981950068739307961}
   - component: {fileID: 4318935571837708714}
   - component: {fileID: 6125724484863171422}
+  - component: {fileID: 3981172986998692409}
   m_Layer: 0
   m_Name: Quan_3
   m_TagString: Untagged
@@ -1825,6 +2484,52 @@ MonoBehaviour:
   dangOChuongDich: 0
   bacChuongHienTai: 0
   dangDiChuyen: 0
+--- !u!61 &3981172986998692409
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8879917186080402225}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 2.09, y: 3.03}
+    newSize: {x: 2.09, y: 3.03}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 2.09, y: 3.03}
+  m_EdgeRadius: 0
 --- !u!1 &9133970466408527281
 GameObject:
   m_ObjectHideFlags: 0
@@ -1836,6 +2541,7 @@ GameObject:
   - component: {fileID: 5114008394217005659}
   - component: {fileID: 9082069404670792076}
   - component: {fileID: 3530391745660042664}
+  - component: {fileID: 1656516182090371174}
   m_Layer: 0
   m_Name: Quan_4
   m_TagString: Untagged
@@ -1935,3 +2641,49 @@ MonoBehaviour:
   dangOChuongDich: 0
   bacChuongHienTai: 0
   dangDiChuyen: 0
+--- !u!61 &1656516182090371174
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9133970466408527281}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 2.17, y: 3.21}
+    newSize: {x: 2.09, y: 3.03}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 2.17, y: 3.21}
+  m_EdgeRadius: 0

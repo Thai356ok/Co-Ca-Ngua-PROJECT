@@ -28,7 +28,6 @@ public class InputManager : MonoBehaviour
 
     private void DetectClick()
     {
-        
         try
         {
             Vector3 screenPos = Input.mousePosition;
@@ -38,14 +37,16 @@ public class InputManager : MonoBehaviour
 
             if (hit.collider != null)
             {
-                // Kiểm tra xem vật thể có chứa Interface IInteractable không 
+                // Vẫn giữ lại phần xử lý IInteractable cho các nút bấm cũ (nếu có)
                 IInteractable interactableObj = hit.collider.GetComponent<IInteractable>();
-
                 if (interactableObj != null)
                 {
                     interactableObj.OnInteract();
-                    OnObjectClicked?.Invoke(hit.collider.gameObject);
                 }
+
+                // ĐIỂM QUYẾT ĐỊNH: Mang cái loa phát sóng ra ngoài chữ IF!
+                // Bây giờ, cứ click trúng bất kỳ vật thể nào có Collider là nó sẽ báo cho UI biết.
+                OnObjectClicked?.Invoke(hit.collider.gameObject);
             }
         }
         catch (NullReferenceException e)

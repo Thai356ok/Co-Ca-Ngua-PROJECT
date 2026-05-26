@@ -16,6 +16,19 @@ public class QuancoMovement : MonoBehaviour
     // Biến cờ hiệu để báo cho các Dev khác biết ngựa có đang di chuyển hay không
     public bool dangDiChuyen = false;
 
+    // ==========================================
+    // BẢN VÁ CỦA DEV 3: LƯU TỌA ĐỘ NHÀ
+    // ==========================================
+    [Header("Tọa độ vật lý")]
+    public Vector3 viTriChuongBanDau; // Nơi lưu tọa độ gốc
+
+    private void Start()
+    {
+        // Khi game vừa bật lên, ngựa đang đứng ở đâu (trong chuồng), lưu ngay vị trí đó lại!
+        viTriChuongBanDau = transform.position;
+    }
+    // ==========================================
+
     // --- MOVEMENT CONTROLLER: Nơi nhận lệnh chạy ---
     public void BatDauDiChuyen(int soBuoc)
     {
