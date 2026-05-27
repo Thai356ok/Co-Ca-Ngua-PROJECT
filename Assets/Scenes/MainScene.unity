@@ -403,6 +403,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc522616c72433148a012489a2dcb6eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::QuancoMovement
+--- !u!1 &241456262 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8663431656862988900, guid: 8afd8ca917b622f41b8bd64ced29421a, type: 3}
+  m_PrefabInstance: {fileID: 2082717926}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &259827999 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 92512618393531592, guid: 8afd8ca917b622f41b8bd64ced29421a, type: 3}
@@ -535,6 +540,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f3db9657534cdfc4484aca4fd55a75ed, type: 3}
+--- !u!1 &553508989 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4022721865308719904, guid: 8afd8ca917b622f41b8bd64ced29421a, type: 3}
+  m_PrefabInstance: {fileID: 2082717926}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &604517002
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -794,6 +804,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc522616c72433148a012489a2dcb6eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::QuancoMovement
+--- !u!1 &1623989333 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5033796639926280947, guid: 8afd8ca917b622f41b8bd64ced29421a, type: 3}
+  m_PrefabInstance: {fileID: 2082717926}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1683687553 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3255265801654237559, guid: 8afd8ca917b622f41b8bd64ced29421a, type: 3}
@@ -1026,6 +1041,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8afd8ca917b622f41b8bd64ced29421a, type: 3}
+--- !u!1 &2137102630 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2179102289269623770, guid: 8afd8ca917b622f41b8bd64ced29421a, type: 3}
+  m_PrefabInstance: {fileID: 2082717926}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1963436323805780894
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1128,12 +1148,28 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6280124623413903792, guid: b821eac8cb7119240b48ff92b6794f47, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 373.6
+      value: -358
       objectReference: {fileID: 0}
     - target: {fileID: 6280124623413903792, guid: b821eac8cb7119240b48ff92b6794f47, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -163.4
+      value: 8
       objectReference: {fileID: 0}
+    - target: {fileID: 7615998709531210191, guid: b821eac8cb7119240b48ff92b6794f47, type: 3}
+      propertyPath: borderDo
+      value: 
+      objectReference: {fileID: 2137102630}
+    - target: {fileID: 7615998709531210191, guid: b821eac8cb7119240b48ff92b6794f47, type: 3}
+      propertyPath: borderVang
+      value: 
+      objectReference: {fileID: 241456262}
+    - target: {fileID: 7615998709531210191, guid: b821eac8cb7119240b48ff92b6794f47, type: 3}
+      propertyPath: borderXanhLa
+      value: 
+      objectReference: {fileID: 1623989333}
+    - target: {fileID: 7615998709531210191, guid: b821eac8cb7119240b48ff92b6794f47, type: 3}
+      propertyPath: borderXanhDuong
+      value: 
+      objectReference: {fileID: 553508989}
     - target: {fileID: 8774734139322288491, guid: b821eac8cb7119240b48ff92b6794f47, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: 370.1

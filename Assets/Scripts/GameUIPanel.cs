@@ -1,29 +1,29 @@
 ﻿using UnityEngine;
 using TMPro;
-using UnityEngine.UI; // Thư viện bắt buộc để dùng UI Image và Button
+using UnityEngine.UI;
+using System.Collections;
 
 public class GameUIPanel : BasePanel
 {
     [Header("Giao diện UI")]
     public TextMeshProUGUI txtTurnInfo;
     public Button btnRollDice;
-
-    // Biến để điều khiển cái màn chiếu hình ảnh xúc xắc
-    public Image imgDiceDisplay;
+    public Image imgDiceDisplay;     
 
     [Header("Dữ liệu Xúc Xắc")]
-    // Khai báo một Mảng (Array) để chứa 6 bức ảnh mặt xúc xắc
     public Sprite[] diceFaces;
+
+    [Header("Cài đặt Hiệu Ứng Xúc Xắc")]
+    public float throwHeight = 80f;      // Độ cao tung lên (pixel)
+    public float throwDuration = 0.3f;   // Thời gian bay lên
+    public float landDuration = 0.2f;    // Thời gian rớt xuống
 
     // ==========================================
     // TRẠM BẬT ĂNG-TEN TỔNG HỢP
     // ==========================================
     private void OnEnable()
     {
-        // 1. Nghe click chuột (Bài của bạn)
         InputManager.OnObjectClicked += UpdateUIText;
-
-        // 2. Nghe lệnh chuyển lượt (Từ Dev 2)
         GameManager.OnTurnChanged += CapNhatChuToiLuotAi;
     }
 
@@ -36,54 +36,195 @@ public class GameUIPanel : BasePanel
         GameManager.OnTurnChanged -= CapNhatChuToiLuotAi;
     }
 
-    // Hàm đổi chữ khi click chuột trúng vật thể
-    // Hàm đổi chữ khi click chuột trúng vật thể
+    // ==========================================
+    // HÀM XỬ LÝ CLICK VẬT THỂ
+    // (Đã xoá dòng "Bạn vừa click vào")
+    // ==========================================
     private void UpdateUIText(GameObject clickedObj)
     {
-        txtTurnInfo.text = "Bạn vừa click vào: " + clickedObj.name;
-        txtTurnInfo.color = Color.green;
-
-        // ====================================================
-        // ĐƯỜNG DÂY MỚI: BÁO CHO DEV 2 BIẾT QUÂN NÀO BỊ CLICK
-        // ====================================================
-
-        // 1. "Nội soi" vật thể vừa click xem nó có chứa đoạn code QuancoMovement của Dev 1 không?
         QuancoMovement quanCo = clickedObj.GetComponent<QuancoMovement>();
-
-        // 2. Nếu có (tức là người chơi click chuẩn xác vào quân cờ, chứ không click nhầm ra nền đất)
         if (quanCo != null)
         {
-            // 3. Gọi Bộ não của Dev 2 dậy và ném quân cờ này vào cho nó kiểm tra!
             GameManager.Instance.ChonQuan(quanCo);
         }
     }
 
-    // Hàm gắn vào nút bấm Đổ Xúc Xắc
+    // ==========================================
+    // NÚT BẤM ĐỔ XÚC XẮC
+    // ==========================================
     public void OnRollDiceClicked()
     {
-        // ====================================================
-        // CHỐT CỬA BẢO VỆ: Nếu Dev 2 bảo chưa phải lúc đổ xúc xắc thì KHÔNG LÀM GÌ CẢ
-        // ====================================================
         if (GameManager.Instance.CurrentState != GameState.Wait_For_Roll)
         {
             Debug.LogWarning("Không thể đổ xúc xắc lúc này! Đang chờ đi quân hoặc chờ lượt.");
-            return; // Lệnh này giúp văng ra khỏi hàm ngay lập tức, các dòng dưới sẽ không chạy!
+            return;
         }
 
-        // 1. Dev 3 random ra số (từ 1 đến 6)
         int diceResult = Random.Range(1, 7);
-
-        // 2. Cập nhật hình ảnh lên màn hình (diceResult - 1 vì mảng bắt đầu từ 0)
-        imgDiceDisplay.sprite = diceFaces[diceResult - 1];
-
-        // 3. CẮM DÂY: Ném số điểm này thẳng vào bụng GameManager của Dev 2
-        GameManager.Instance.YeuCauTungXucXac(diceResult);
+        StartCoroutine(PlayDiceRollAnimation(diceResult));
     }
 
-    // Hàm này sẽ TỰ ĐỘNG CHẠY mỗi khi Dev 2 phát loa báo chuyển lượt
+    // ==========================================
+    // COROUTINE HIỆU ỨNG TUNG XÚC XẮC
+    // ==========================================
+    private IEnumerator PlayDiceRollAnimation(int finalResult)
+    {
+        // Khoá nút lại để không bấm 2 lần trong khi đang diễn hoạt hình
+        btnRollDice.interactable = false;
+
+        RectTransform diceRect = imgDiceDisplay.GetComponent<RectTransform>();
+        Vector2 originalPos = diceRect.anchoredPosition;
+        Vector3 originalScale = diceRect.localScale;
+
+        // Ẩn chữ ngay khi bắt đầu tung
+        txtTurnInfo.gameObject.SetActive(false);
+
+        // ------------------------------------------
+        // PHASE 1: TUNG LÊN (bay lên theo parabol)
+        // ------------------------------------------
+        float t = 0f;
+        while (t < throwDuration)
+        {
+            t += Time.deltaTime;
+            float progress = Mathf.Clamp01(t / throwDuration);
+
+            float yOffset = Mathf.Sin(progress * Mathf.PI) * throwHeight;
+            float scaleMult = 1f + Mathf.Sin(progress * Mathf.PI) * 0.3f;
+
+            diceRect.anchoredPosition = originalPos + new Vector2(0f, yOffset);
+            diceRect.localScale = originalScale * scaleMult;
+
+            yield return null;
+        }
+
+        // ------------------------------------------
+        // PHASE 2: LẬT MẶT NGẪU NHIÊN (2-3 lần)
+        // ------------------------------------------
+        float interval = 0.12f;
+        float elapsed = 0f;
+        int flipCount = 0;
+        int maxFlips = Random.Range(2, 4); // Ngẫu nhiên 2 hoặc 3 lần
+
+        while (flipCount < maxFlips)
+        {
+            int randomFace = Random.Range(0, diceFaces.Length);
+            imgDiceDisplay.sprite = diceFaces[randomFace];
+
+            float shakeX = Mathf.Sin(elapsed * 35f) * 6f;
+            diceRect.anchoredPosition = originalPos + new Vector2(shakeX, 22f);
+
+            yield return new WaitForSeconds(interval);
+            elapsed += interval;
+            flipCount++;
+
+            // Chậm lại ở lần lật cuối để có cảm giác "sắp rớt"
+            if (flipCount == maxFlips - 1)
+                interval = 0.22f;
+        }
+
+        // ------------------------------------------
+        // PHASE 3: RỚT XUỐNG + NẢY NHẸ KHI ĐÁP
+        // ------------------------------------------
+        // Hiện đúng mặt kết quả TRƯỚC khi rớt xuống
+        imgDiceDisplay.sprite = diceFaces[finalResult - 1];
+
+        t = 0f;
+        while (t < landDuration)
+        {
+            t += Time.deltaTime;
+            float progress = Mathf.Clamp01(t / landDuration);
+
+            float yOffset = Mathf.Lerp(22f, 0f, progress);
+
+            // Squash effect khi chạm đất
+            float squashY = 1f - Mathf.Sin(progress * Mathf.PI) * 0.18f;
+            float squashX = 1f + Mathf.Sin(progress * Mathf.PI) * 0.08f;
+
+            diceRect.anchoredPosition = originalPos + new Vector2(0f, yOffset);
+            diceRect.localScale = new Vector3(
+                originalScale.x * squashX,
+                originalScale.y * squashY,
+                originalScale.z
+            );
+
+            yield return null;
+        }
+
+        // ------------------------------------------
+        // KẾT THÚC: Reset hoàn toàn về trạng thái gốc
+        // ------------------------------------------
+        diceRect.anchoredPosition = originalPos;
+        diceRect.localScale = originalScale;
+
+        // Mở khoá nút + thông báo kết quả cho GameManager
+        btnRollDice.interactable = true;
+        GameManager.Instance.YeuCauTungXucXac(finalResult);
+    }
+
+    // ==========================================
+    // CẬP NHẬT CHỮ KHI CHUYỂN LƯỢT
+    // ==========================================
+    [Header("Viền Highlight Lượt Chơi")]
+    public GameObject borderXanhLa;
+    public GameObject borderVang;
+    public GameObject borderXanhDuong;
+    public GameObject borderDo;
+    private Coroutine blinkCoroutine; // Lưu coroutine đang chạy để tắt đúng cách
+
     private void CapNhatChuToiLuotAi(MauNguoiChoi mau)
     {
-        txtTurnInfo.text = "Bây giờ là lượt của màu: " + mau.ToString() + " !!!";
-        txtTurnInfo.color = Color.yellow; // Mình để màu vàng cho nổi bật nhé
+
+        // Dừng coroutine cũ nếu đang chạy
+        if (blinkCoroutine != null)
+            StopCoroutine(blinkCoroutine);
+
+        // Tắt hết viền trước
+        borderXanhLa.SetActive(false);
+        borderVang.SetActive(false);
+        borderXanhDuong.SetActive(false);
+        borderDo.SetActive(false);
+
+        // Bật đúng viền rồi cho nhấp nháy
+        GameObject borderHienTai = null;
+        switch (mau)
+        {
+            case MauNguoiChoi.XanhLa: borderHienTai = borderXanhLa; break;
+            case MauNguoiChoi.Vang: borderHienTai = borderVang; break;
+            case MauNguoiChoi.XanhDuong: borderHienTai = borderXanhDuong; break;
+            case MauNguoiChoi.Do: borderHienTai = borderDo; break;
+        }
+
+        if (borderHienTai != null)
+            blinkCoroutine = StartCoroutine(NhapNhay(borderHienTai));
+    }
+
+    // ==========================================
+    // COROUTINE NHẤP NHÁY
+    // ==========================================
+    private IEnumerator NhapNhay(GameObject border)
+    {
+        SpriteRenderer sr = border.GetComponent<SpriteRenderer>();
+        border.SetActive(true);
+
+        while (true) // Nhấp nháy liên tục cho đến khi bị StopCoroutine
+        {
+            // Fade dần từ hiện -> ẩn
+            for (float alpha = 1f; alpha >= 0f; alpha -= Time.deltaTime * 3f)
+            {
+                Color c = sr.color;
+                c.a = alpha;
+                sr.color = c;
+                yield return null;
+            }
+
+            // Fade dần từ ẩn -> hiện
+            for (float alpha = 0f; alpha <= 1f; alpha += Time.deltaTime * 3f)
+            {
+                Color c = sr.color;
+                c.a = alpha;
+                sr.color = c;
+                yield return null;
+            }
+        }
     }
 }
