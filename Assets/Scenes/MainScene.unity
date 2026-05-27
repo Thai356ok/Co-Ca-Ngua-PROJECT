@@ -137,11 +137,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 91706900547207676, guid: 38a6c83d0e0b2b247acaaad9f1945106, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.01
+      value: -0.047
       objectReference: {fileID: 0}
     - target: {fileID: 91706900547207676, guid: 38a6c83d0e0b2b247acaaad9f1945106, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.61
+      value: 0.622
       objectReference: {fileID: 0}
     - target: {fileID: 482892363890850291, guid: 38a6c83d0e0b2b247acaaad9f1945106, type: 3}
       propertyPath: m_LocalPosition.x
@@ -238,6 +238,14 @@ PrefabInstance:
     - target: {fileID: 3937678681255597773, guid: 38a6c83d0e0b2b247acaaad9f1945106, type: 3}
       propertyPath: m_LocalPosition.y
       value: 0.22
+      objectReference: {fileID: 0}
+    - target: {fileID: 4237386428031153168, guid: 38a6c83d0e0b2b247acaaad9f1945106, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.03
+      objectReference: {fileID: 0}
+    - target: {fileID: 4237386428031153168, guid: 38a6c83d0e0b2b247acaaad9f1945106, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.012
       objectReference: {fileID: 0}
     - target: {fileID: 4593573508015779659, guid: 38a6c83d0e0b2b247acaaad9f1945106, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1109,6 +1117,30 @@ PrefabInstance:
     - target: {fileID: 5193169237341858258, guid: b821eac8cb7119240b48ff92b6794f47, type: 3}
       propertyPath: m_Name
       value: GameUI_Canvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 5348730933940895555, guid: b821eac8cb7119240b48ff92b6794f47, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 392.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5348730933940895555, guid: b821eac8cb7119240b48ff92b6794f47, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 142.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6280124623413903792, guid: b821eac8cb7119240b48ff92b6794f47, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 373.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6280124623413903792, guid: b821eac8cb7119240b48ff92b6794f47, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -163.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 8774734139322288491, guid: b821eac8cb7119240b48ff92b6794f47, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 370.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8774734139322288491, guid: b821eac8cb7119240b48ff92b6794f47, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 11
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

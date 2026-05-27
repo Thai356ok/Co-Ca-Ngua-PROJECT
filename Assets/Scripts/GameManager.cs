@@ -9,10 +9,10 @@ using UnityEngine;
 // ============================================================
 public enum MauNguoiChoi
 {
-    XanhLa   = 0,
-    Vang     = 1,
+    XanhLa = 0,
+    Vang = 1,
     XanhDuong = 2,
-    Do       = 3
+    Do = 3
 }
 
 // ============================================================
@@ -57,7 +57,7 @@ public class GameManager : MonoBehaviour
     // ----------------------------------------------------------
     [Header("References (kéo thả vào đây)")]
     [SerializeField] private DiceManager diceManager;
-    [SerializeField] private TokenLogic  tokenLogic;
+    [SerializeField] private TokenLogic tokenLogic;
 
     // ----------------------------------------------------------
     //  State Machine
@@ -67,9 +67,9 @@ public class GameManager : MonoBehaviour
     public GameState CurrentState => currentState;
 
     // Event để Dev 3 (UI) lắng nghe
-    public static event Action<GameState>       OnStateChanged;
-    public static event Action<MauNguoiChoi>    OnTurnChanged;
-    public static event Action<MauNguoiChoi>    OnGameOver;
+    public static event Action<GameState> OnStateChanged;
+    public static event Action<MauNguoiChoi> OnTurnChanged;
+    public static event Action<MauNguoiChoi> OnGameOver;
 
     // ----------------------------------------------------------
     //  Turn Manager
@@ -82,8 +82,8 @@ public class GameManager : MonoBehaviour
     public NguoiChoi NguoiChoiHienTai => danhSachNguoiChoi[luotHienTai];
 
     private bool duocDiThem = false;   // Được đi thêm khi ra 6 hoặc đá quân
-    private int  giaTriXucXac = 0;
-    public  int  GiaTriXucXac => giaTriXucXac;
+    private int giaTriXucXac = 0;
+    public int GiaTriXucXac => giaTriXucXac;
 
     // Danh sách quân hợp lệ sau khi tung xúc xắc
     private List<QuancoMovement> quanCoTheChon = new List<QuancoMovement>();
@@ -120,7 +120,7 @@ public class GameManager : MonoBehaviour
     public void BatDauGame()
     {
         luotHienTai = 0;
-        duocDiThem  = false;
+        duocDiThem = false;
         DoiTrangThai(GameState.Wait_For_Roll);
     }
 
@@ -140,12 +140,12 @@ public class GameManager : MonoBehaviour
     {
         switch (state)
         {
-            case GameState.Wait_For_Roll:      XuLy_ChoTung();        break;
+            case GameState.Wait_For_Roll: XuLy_ChoTung(); break;
             case GameState.Rolling:            /* DiceManager lo */   break;
-            case GameState.Wait_For_Selection: XuLy_ChoChon();        break;
+            case GameState.Wait_For_Selection: XuLy_ChoChon(); break;
             case GameState.Moving:             /* QuancoMovement lo */ break;
-            case GameState.Check_Win:          XuLy_KiemTraThang();   break;
-            case GameState.Game_Over:          XuLy_KetThuc();        break;
+            case GameState.Check_Win: XuLy_KiemTraThang(); break;
+            case GameState.Game_Over: XuLy_KetThuc(); break;
         }
     }
 
@@ -155,6 +155,7 @@ public class GameManager : MonoBehaviour
     private void XuLy_ChoTung()
     {
         duocDiThem = false;
+
         OnTurnChanged?.Invoke(NguoiChoiHienTai.mau); // Dev 3 cập nhật UI
         Debug.Log($"[GameManager] Đến lượt {NguoiChoiHienTai.mau} – Nhấn tung xúc xắc!");
     }
@@ -182,8 +183,18 @@ public class GameManager : MonoBehaviour
 
         if (quanCoTheChon.Count == 0)
         {
-            Debug.Log("[GameManager] Không có quân nào đi được → chuyển lượt.");
-            ChuyenLuot();
+            Debug.Log("[GameManager] Bị kẹt! Không có quân nào đi được.");
+
+            // LUẬT MỚI: Bị kẹt nhưng đổ ra 1 hoặc 6 thì ĐƯỢC TUNG TIẾP. Nếu số khác thì MẤT LƯỢT.
+            if (ketQua == 1 || ketQua == 6)
+            {
+                Debug.Log($"[GameManager] Kẹt nhưng ra {ketQua} -> Vẫn được tung xúc xắc tiếp!");
+                DoiTrangThai(GameState.Wait_For_Roll);
+            }
+            else
+            {
+                ChuyenLuot();
+            }
         }
         else
         {
@@ -226,11 +237,15 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log($"[GameManager] Di chuyển xong. Kết quả: {ketQua}");
 
-        // Được đi thêm nếu ra 6 hoặc đá quân
-        if (ketQua == MoveResult.KickedOpponent || giaTriXucXac == 6)
+        // LUẬT MỚI: CHỈ được đi thêm nếu ra 1 hoặc 6. Đá quân địch KHÔNG CÒN được thưởng thêm lượt.
+        if (giaTriXucXac == 1 || giaTriXucXac == 6)
         {
             duocDiThem = true;
-            Debug.Log($"[GameManager] {NguoiChoiHienTai.mau} được đi thêm lượt!");
+            Debug.Log($"[GameManager] {NguoiChoiHienTai.mau} được đi thêm lượt do đổ được {giaTriXucXac}!");
+        }
+        else
+        {
+            duocDiThem = false; // Đảm bảo reset cờ, tránh bug
         }
 
         // Cập nhật số quân về đích
@@ -245,13 +260,37 @@ public class GameManager : MonoBehaviour
 
     private void XuLy_KiemTraThang()
     {
-        if (tokenLogic.KiemTraThang(NguoiChoiHienTai.mau))
+        // 1. Kiểm tra xem người hiện tại có vừa đưa đủ 4 quân về chuồng an toàn không
+        if (!NguoiChoiHienTai.daThang && tokenLogic.KiemTraThang(NguoiChoiHienTai.mau))
         {
-            NguoiChoiHienTai.daThang = true;
-            DoiTrangThai(GameState.Game_Over);
-            return;
+            NguoiChoiHienTai.daThang = true; // Đánh dấu người này đã hoàn thành phần thi
+            Debug.Log($"[GameManager] 🎉 Chúc mừng {NguoiChoiHienTai.mau} đã hoàn thành phần thi!");
+
+            // 2. Đếm xem trên bàn cờ đã có bao nhiêu người về đích
+            int soNguoiDaThang = 0;
+            foreach (var nc in danhSachNguoiChoi)
+            {
+                if (nc.daThang) soNguoiDaThang++;
+            }
+
+            // 3. Nếu đã có 3 người về đích (tức là chỉ còn 1 người chót bảng) -> MỚI KẾT THÚC GAME
+            if (soNguoiDaThang >= 3)
+            {
+                DoiTrangThai(GameState.Game_Over);
+                return;
+            }
+            else
+            {
+                // Nếu chưa đủ 3 người về đích, game tiếp tục!
+                // Mặc dù người này có thể đổ ra 6, nhưng vì họ đã hoàn thành game nên mất luôn quyền đi thêm lượt.
+                // Hàm ChuyenLuot() sẽ tự động nhảy qua đầu người này ở các vòng sau.
+                ChuyenLuot();
+                return;
+            }
         }
 
+        // --- ĐỐI VỚI NHỮNG NGƯỜI CHƯA HOÀN THÀNH ---
+        // Xử lý quyền đi thêm lượt bình thường (đổ ra 1 hoặc 6)
         if (duocDiThem)
         {
             Debug.Log($"[GameManager] {NguoiChoiHienTai.mau} chơi thêm lượt.");
@@ -265,8 +304,9 @@ public class GameManager : MonoBehaviour
 
     private void XuLy_KetThuc()
     {
-        Debug.Log($"[GameManager] 🎉 {NguoiChoiHienTai.mau} THẮNG!");
-        OnGameOver?.Invoke(NguoiChoiHienTai.mau); // Dev 3 hiện popup
+        Debug.Log($"[GameManager] 🏁 TRÒ CHƠI HOÀN TOÀN KẾT THÚC! Đã tìm ra 3 người chiến thắng.");
+        // Dev 3 có thể dùng event này để show bảng xếp hạng
+        OnGameOver?.Invoke(NguoiChoiHienTai.mau);
     }
 
     // ============================================================
@@ -274,9 +314,11 @@ public class GameManager : MonoBehaviour
     // ============================================================
     private void ChuyenLuot()
     {
+        // Thực hiện logic chuyển index người chơi cũ
         luotHienTai = TimNguoiChoiTiepTheo();
         Debug.Log($"[GameManager] Chuyển sang lượt: {NguoiChoiHienTai.mau}");
         DoiTrangThai(GameState.Wait_For_Roll);
+        // Khi state chuyển sang Wait_For_Roll, hàm XuLy_ChoTung() sẽ được gọi tự động.
     }
 
     private int TimNguoiChoiTiepTheo()
@@ -296,7 +338,7 @@ public class GameManager : MonoBehaviour
     // ============================================================
     //  PUBLIC HELPERS cho Dev 3, Dev 4
     // ============================================================
-    public List<NguoiChoi> LayDanhSachNguoiChoi()  => danhSachNguoiChoi;
-    public List<QuancoMovement> LayQuanCoTheChon()  => quanCoTheChon;
+    public List<NguoiChoi> LayDanhSachNguoiChoi() => danhSachNguoiChoi;
+    public List<QuancoMovement> LayQuanCoTheChon() => quanCoTheChon;
     public bool LaNguoiChoiHienTai(MauNguoiChoi mau) => NguoiChoiHienTai.mau == mau;
 }
