@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class QuancoMovement : MonoBehaviour
 {
-    // Thứ tự màu đã được chỉnh lại theo đúng ý bạn
     public enum MauSac { XanhLa, Vang, XanhDuong, Do }
     public MauSac mauCuaToi;
 
@@ -13,23 +12,16 @@ public class QuancoMovement : MonoBehaviour
     public bool dangOChuongDich = false;
     public int bacChuongHienTai = 0;
 
-    // Biến cờ hiệu để báo cho các Dev khác biết ngựa có đang di chuyển hay không
     public bool dangDiChuyen = false;
 
-    // ==========================================
-    // BẢN VÁ CỦA DEV 3: LƯU TỌA ĐỘ NHÀ
-    // ==========================================
     [Header("Tọa độ vật lý")]
-    public Vector3 viTriChuongBanDau; // Nơi lưu tọa độ gốc
+    public Vector3 toaDoChuongBanDau;
 
     private void Start()
     {
-        // Khi game vừa bật lên, ngựa đang đứng ở đâu (trong chuồng), lưu ngay vị trí đó lại!
-        viTriChuongBanDau = transform.position;
+        toaDoChuongBanDau = transform.position;
     }
-    // ==========================================
 
-    // --- MOVEMENT CONTROLLER: Nơi nhận lệnh chạy ---
     public void BatDauDiChuyen(int soBuoc)
     {
         if (dangDiChuyen) return;
@@ -40,49 +32,50 @@ public class QuancoMovement : MonoBehaviour
     {
         dangDiChuyen = true;
 
+        if (viTriHienTai == -1)
+        {
+            soBuoc = 1;
+        }
+
         for (int i = 0; i < soBuoc; i++)
         {
             Vector3 diemDich = Vector3.zero;
 
-            // --- PATH ROUTING: Logic định tuyến chia ngã rẽ ---
-            // Bàn cờ 56 ô, đi đủ 55 bước là tới sát cửa chuồng, bước tiếp theo phải rẽ
+            // ĐÚNG 55 BƯỚC MỚI ĐƯỢC VÀO CHUỒNG ĐÍCH
             if (soBuocDaDi == 55 || dangOChuongDich)
             {
                 dangOChuongDich = true;
-                bacChuongHienTai++; // Cộng dồn bậc chuồng
+                bacChuongHienTai++;
                 diemDich = LayToaDoChuongDich(bacChuongHienTai);
             }
             else
             {
-                // Đang đi dạo trên 56 ô vòng tròn chung
                 if (viTriHienTai == -1)
                 {
-                    // Lần đầu xuất chuồng thì nhảy ra đúng tọa độ xuất phát
                     viTriHienTai = LayViTriXuatPhat();
                 }
                 else
                 {
-                    viTriHienTai = (viTriHienTai + 1) % 56; // Bàn cờ 56 ô nên chia dư cho 56
+                    viTriHienTai = (viTriHienTai + 1) % 56;
                     soBuocDaDi++;
                 }
 
                 diemDich = MapManager.Instance.vongTronChung[viTriHienTai].position;
             }
 
-            // --- DI CHUYỂN TỊNH TIẾN ---
             float tocDo = 8f;
             while (Vector3.Distance(transform.position, diemDich) > 0.01f)
             {
                 transform.position = Vector3.MoveTowards(transform.position, diemDich, tocDo * Time.deltaTime);
                 yield return null;
             }
+            transform.position = diemDich; // Chốt hạ vị trí
         }
 
         dangDiChuyen = false;
-        Debug.Log($"[Dev 1 - Hạ tầng] Quân {mauCuaToi} đã chạy xong điểm đến. Các Dev khác làm luật ăn/đá/thắng thua tiếp quản nhé!");
+        Debug.Log($"[Dev 1] Quân {mauCuaToi} đã chạy xong.");
     }
 
-    // Tọa độ xuất phát chính xác theo thiết kế mới của bạn
     public int LayViTriXuatPhat()
     {
         switch (mauCuaToi)
@@ -95,10 +88,9 @@ public class QuancoMovement : MonoBehaviour
         }
     }
 
-    // Lấy tọa độ 1 trong 6 bậc chuồng đích
     Vector3 LayToaDoChuongDich(int bac)
     {
-        int indexMANG = bac - 1; // Vì List đếm từ 0, nên Bậc 1 sẽ là vị trí số 0
+        int indexMANG = bac - 1;
         switch (mauCuaToi)
         {
             case MauSac.XanhLa: return MapManager.Instance.chuongXanhLa[indexMANG].position;

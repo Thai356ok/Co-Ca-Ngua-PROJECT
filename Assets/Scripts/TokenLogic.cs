@@ -3,9 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-// ============================================================
-//  ENUM: Kết quả một nước đi – dùng chung với GameManager
-// ============================================================
 public enum MoveResult
 {
     Normal,          // Di chuyển bình thường
@@ -13,35 +10,23 @@ public enum MoveResult
     Reached_Home,    // Quân về đích thành công
 }
 
-// ============================================================
-//  TOKENLOGIC: Rule Engine – giao tiếp trực tiếp với QuancoMovement (Dev 1)
-// ============================================================
 public class TokenLogic : MonoBehaviour
 {
     // ----------------------------------------------------------
-    //  Constants – phải khớp với Dev 1
+    //  Constants
     // ----------------------------------------------------------
-    private const int TONG_O_VONG_NGOAI  = 56; // Dev 1 dùng % 56
-    private const int SO_BUOC_VAO_CHUONG = 55; // Dev 1: soBuocDaDi == 55 thì rẽ vào chuồng
-    private const int SO_BAC_CHUONG      = 6;  // 6 bậc chuồng đích
-    private const int SO_QUAN_MOI_MAU    = 4;
-    private const int SO_QUAN_PHAI_VE    = 4;
+    private const int TONG_O_VONG_NGOAI = 56;
+    private const int SO_BUOC_VAO_CHUONG = 55; // Về lại 55: Đi 55 bước tới cửa, bước 56 là quẹo vô bậc 1
+    private const int SO_BAC_CHUONG = 6;
 
-    // Ô an toàn trên vòng tròn chung (trùng với vị trí xuất phát 4 màu + 4 ô giữa)
-    private static readonly HashSet<int> OAnToan = new HashSet<int> { 0, 8, 14, 22, 28, 36, 42, 50 };
-
-    // ----------------------------------------------------------
-    //  Quản lý tất cả quân – key là MauNguoiChoi
-    //  Lấy QuancoMovement từ Scene bằng tag hoặc kéo thả
-    // ----------------------------------------------------------
-    [Header("Kéo thả 4 nhóm quân vào đây (theo thứ tự XanhLa/Vang/XanhDuong/Do)")]
-    [SerializeField] private List<QuancoMovement> quanXanhLa   = new List<QuancoMovement>();
-    [SerializeField] private List<QuancoMovement> quanVang      = new List<QuancoMovement>();
+    [Header("Kéo thả 4 nhóm quân vào đây")]
+    [SerializeField] private List<QuancoMovement> quanXanhLa = new List<QuancoMovement>();
+    [SerializeField] private List<QuancoMovement> quanVang = new List<QuancoMovement>();
     [SerializeField] private List<QuancoMovement> quanXanhDuong = new List<QuancoMovement>();
-    [SerializeField] private List<QuancoMovement> quanDo        = new List<QuancoMovement>();
+    [SerializeField] private List<QuancoMovement> quanDo = new List<QuancoMovement>();
 
     // ============================================================
-    //  RULE 1: Lấy danh sách quân CÓ THỂ ĐI với giá trị xúc xắc
+    //  RULE 1: TÌM QUÂN HỢP LỆ ĐỂ ĐI
     // ============================================================
     public List<QuancoMovement> LayQuanCoTheChon(MauNguoiChoi mau, int xucXac)
     {
@@ -54,40 +39,79 @@ public class TokenLogic : MonoBehaviour
         return danhSach;
     }
 
-    /// <summary>Kiểm tra một quân có hợp lệ để đi không.</summary>
     private bool CoTheChon(QuancoMovement quan, int xucXac)
     {
-        // --- Đang trong chuồng chờ (chưa ra quân) ---
+        // --- 1. ĐANG TRONG CHUỒNG CHỜ ---
         if (quan.viTriHienTai == -1)
-            return xucXac == 6; // Chỉ ra được khi ra 6
+        {
+            if (xucXac == 1 || xucXac == 6)
+            {
+                int viTriXuatPhat = LayViTriXuatPhat((MauNguoiChoi)(int)quan.mauCuaToi);
+                QuancoMovement quanTaiCua = TimQuanCoTaiViTriChung(viTriXuatPhat);
 
-        // --- Đã về đích hoàn toàn ---
+                if (quanTaiCua != null && quanTaiCua.mauCuaToi == (QuancoMovement.MauSac)(int)quan.mauCuaToi)
+                {
+                    return false; // Bị kẹt ở cửa
+                }
+                return true;
+            }
+            return false;
+        }
+
+        // --- 2. ĐÃ LÊN ĐẾN BẬC 6 (MAX) ---
         if (quan.dangOChuongDich && quan.bacChuongHienTai >= SO_BAC_CHUONG)
             return false;
 
-        // --- Đang trong đường chuồng đích ---
-        if (quan.dangOChuongDich)
-        {
-            // Không được vượt quá số bậc chuồng
-            return (quan.bacChuongHienTai + xucXac) <= SO_BAC_CHUONG;
-        }
-
-        // --- Đang trên vòng tròn chung ---
-        // Kiểm tra có vừa đủ bước vào chuồng không (không vượt)
+        // --- 3. KIỂM TRA ĐIỀU KIỆN LÊN CHUỒNG VÀ DI CHUYỂN TRONG CHUỒNG ---
         int buocConLaiDenCua = SO_BUOC_VAO_CHUONG - quan.soBuocDaDi;
-        if (xucXac > buocConLaiDenCua)
+
+        if (!quan.dangOChuongDich && buocConLaiDenCua > 0)
         {
-            // Bước vào đường chuồng – kiểm tra không vượt 6 bậc
-            int buocTrongChuong = xucXac - buocConLaiDenCua;
-            return buocTrongChuong <= SO_BAC_CHUONG;
+            // Chưa tới cửa chuồng mà dư xúc xắc -> Kẹt
+            if (xucXac > buocConLaiDenCua) return false;
+        }
+        else
+        {
+            // Đang đứng CỬA CHUỒNG hoặc ĐÃ VÀO CHUỒNG
+            int bacDichDen = quan.bacChuongHienTai + xucXac;
+
+            if (bacDichDen > SO_BAC_CHUONG) return false; // Vượt quá bậc 6
+
+            // SỬA LỖI Ở ĐÂY: Dò radar từ vị trí hiện tại lên vị trí đích xem có đồng đội chặn không
+            for (int i = quan.bacChuongHienTai + 1; i <= bacDichDen; i++)
+            {
+                if (KiemTraBacChuongCoNguoiChua((MauNguoiChoi)(int)quan.mauCuaToi, i))
+                {
+                    return false; // Có người cản đường hoặc ô đích đã bị chiếm -> Kẹt!
+                }
+            }
+            return true; // Đường thông hè thoáng
         }
 
-        return true; // Đi bình thường trên vòng ngoài
+        // --- 4. CHECK CẢN ĐƯỜNG BÊN NGOÀI VÒNG CHUNG ---
+        int viTriAo = quan.viTriHienTai;
+        int soBuocQuet = xucXac;
+
+        for (int i = 1; i <= soBuocQuet; i++)
+        {
+            viTriAo = (viTriAo + 1) % TONG_O_VONG_NGOAI;
+            bool laODich = (i == xucXac);
+
+            QuancoMovement quanCanDuong = TimQuanCoTaiViTriChung(viTriAo);
+
+            if (quanCanDuong != null)
+            {
+                if (!laODich)
+                    return false;
+                else if (quanCanDuong.mauCuaToi == quan.mauCuaToi)
+                    return false;
+            }
+        }
+        return true;
     }
 
     // ============================================================
-    //  THỰC HIỆN DI CHUYỂN – Gọi BatDauDiChuyen của Dev 1
-    //  Chờ flag dangDiChuyen = false rồi mới gọi callback
+    //  THỰC HIỆN DI CHUYỂN
     // ============================================================
     public void ThucHienDiChuyen(QuancoMovement quan, int xucXac, Action<MoveResult> onComplete)
     {
@@ -96,24 +120,17 @@ public class TokenLogic : MonoBehaviour
 
     private IEnumerator ChoDiChuyenRoiKiemTra(QuancoMovement quan, int xucXac, Action<MoveResult> onComplete)
     {
-        // Gọi Dev 1 di chuyển
         quan.BatDauDiChuyen(xucXac);
-
-        // Chờ cho đến khi Dev 1 báo xong (dangDiChuyen = false)
         yield return new WaitUntil(() => !quan.dangDiChuyen);
 
-        // --- Kiểm tra kết quả sau khi đến nơi ---
         MoveResult ketQua = MoveResult.Normal;
 
-        if (quan.dangOChuongDich && quan.bacChuongHienTai >= SO_BAC_CHUONG)
+        if (quan.dangOChuongDich)
         {
-            // Về đích hoàn toàn
-            ketQua = MoveResult.Reached_Home;
-            Debug.Log($"[TokenLogic] 🏠 Quân {quan.mauCuaToi} về đích!");
+            ketQua = MoveResult.Reached_Home; // Lên bất kỳ bậc chuồng nào cũng tính là đã về an toàn
         }
-        else if (!quan.dangOChuongDich)
+        else
         {
-            // Kiểm tra có đá quân đối thủ không
             ketQua = KiemTraDaQuan(quan);
         }
 
@@ -121,90 +138,117 @@ public class TokenLogic : MonoBehaviour
     }
 
     // ============================================================
-    //  RULE 2: Kiểm tra đá quân đối thủ tại ô hiện tại
+    //  ĐÁ QUÂN ĐỐI THỦ
     // ============================================================
     private MoveResult KiemTraDaQuan(QuancoMovement quanVuaMo)
     {
         int viTriHienTai = quanVuaMo.viTriHienTai;
 
-        // Ô an toàn → không đá được
-        if (OAnToan.Contains(viTriHienTai))
-            return MoveResult.Normal;
-
-        // Duyệt tất cả quân màu khác
         foreach (MauNguoiChoi mau in Enum.GetValues(typeof(MauNguoiChoi)))
         {
-            // Bỏ qua cùng màu
             if (mau == (MauNguoiChoi)(int)quanVuaMo.mauCuaToi) continue;
 
             foreach (var quanDich in LayQuanTheoMau(mau))
             {
                 if (quanDich.viTriHienTai == viTriHienTai && !quanDich.dangOChuongDich)
                 {
-                    // Đá quân về chuồng
-                    quanDich.viTriHienTai    = -1;
-                    quanDich.soBuocDaDi      = 0;
+                    quanDich.viTriHienTai = -1;
+                    quanDich.soBuocDaDi = 0;
                     quanDich.dangOChuongDich = false;
                     quanDich.bacChuongHienTai = 0;
-                    // Đưa quân về vị trí vật lý chuồng ban đầu
                     quanDich.transform.position = LayViTriChuongBanDau(quanDich);
 
-                    Debug.Log($"[TokenLogic] 💥 {quanVuaMo.mauCuaToi} đá quân {quanDich.mauCuaToi} về chuồng!");
+                    Debug.Log($"[TokenLogic] 💥 {quanVuaMo.mauCuaToi} đá bay {quanDich.mauCuaToi} về chuồng!");
                     return MoveResult.KickedOpponent;
                 }
             }
         }
-
         return MoveResult.Normal;
     }
 
     // ============================================================
-    //  RULE 3: Kiểm tra điều kiện THẮNG
+    //  LOGIC KIỂM TRA THẮNG CHUẨN VN (Xếp đủ 6-5-4-3)
     // ============================================================
     public bool KiemTraThang(MauNguoiChoi mau)
     {
-        int soQuanVeDich = 0;
+        int soQuanTrongChuong = 0;
+        int tongSoBac = 0;
+
         foreach (var quan in LayQuanTheoMau(mau))
         {
-            if (quan.dangOChuongDich && quan.bacChuongHienTai >= SO_BAC_CHUONG)
-                soQuanVeDich++;
+            if (quan.dangOChuongDich)
+            {
+                soQuanTrongChuong++;
+                tongSoBac += quan.bacChuongHienTai;
+            }
         }
-        return soQuanVeDich >= SO_QUAN_PHAI_VE;
+
+        // SỬA LẠI ĐIỀU KIỆN THẮNG: Đủ 4 quân về chuồng VÀ tổng các bậc bằng đúng 18 (6 + 5 + 4 + 3)
+        if (soQuanTrongChuong == 4 && tongSoBac == 18)
+        {
+            return true;
+        }
+
+        return false;
     }
 
     // ============================================================
-    //  HELPERS
+    //  HELPERS & RADAR
     // ============================================================
-
-    /// <summary>Map MauNguoiChoi → danh sách QuancoMovement tương ứng.</summary>
     public List<QuancoMovement> LayQuanTheoMau(MauNguoiChoi mau)
     {
         switch (mau)
         {
-            case MauNguoiChoi.XanhLa:    return quanXanhLa;
-            case MauNguoiChoi.Vang:      return quanVang;
+            case MauNguoiChoi.XanhLa: return quanXanhLa;
+            case MauNguoiChoi.Vang: return quanVang;
             case MauNguoiChoi.XanhDuong: return quanXanhDuong;
-            case MauNguoiChoi.Do:        return quanDo;
+            case MauNguoiChoi.Do: return quanDo;
             default: return new List<QuancoMovement>();
         }
     }
 
-    /// <summary>Lấy vị trí vật lý chuồng ban đầu để reset quân bị đá.</summary>
-    private Vector3 LayViTriChuongBanDau(QuancoMovement quan)
+    private QuancoMovement TimQuanCoTaiViTriChung(int viTriKiemTra)
     {
-        // TODO: Dev 1 / BoardManager cung cấp vị trí chuồng ban đầu của từng quân
-        // Tạm thời dùng vị trí hiện tại (sẽ update khi có data từ Dev 1)
-        Debug.LogWarning($"[TokenLogic] Cần Dev 1 cung cấp tọa độ chuồng ban đầu cho {quan.mauCuaToi}!");
-        return quan.transform.position;
+        foreach (MauNguoiChoi mau in Enum.GetValues(typeof(MauNguoiChoi)))
+        {
+            foreach (var quan in LayQuanTheoMau(mau))
+            {
+                if (quan.viTriHienTai == viTriKiemTra && !quan.dangOChuongDich && quan.viTriHienTai != -1)
+                {
+                    return quan;
+                }
+            }
+        }
+        return null;
     }
 
-    /// <summary>Lấy số quân đã về đích của một màu.</summary>
-    public int DemQuanVeDich(MauNguoiChoi mau)
+    // RADAR MỚI: Quét xem một bậc chuồng cụ thể đã có quân nhà đứng chưa
+    private bool KiemTraBacChuongCoNguoiChua(MauNguoiChoi mau, int bacKiemTra)
     {
-        int count = 0;
         foreach (var quan in LayQuanTheoMau(mau))
-            if (quan.dangOChuongDich && quan.bacChuongHienTai >= SO_BAC_CHUONG)
-                count++;
-        return count;
+        {
+            if (quan.dangOChuongDich && quan.bacChuongHienTai == bacKiemTra)
+            {
+                return true; // Có người rồi!
+            }
+        }
+        return false;
+    }
+
+    private int LayViTriXuatPhat(MauNguoiChoi mau)
+    {
+        switch (mau)
+        {
+            case MauNguoiChoi.XanhLa: return 0;
+            case MauNguoiChoi.Vang: return 14;
+            case MauNguoiChoi.XanhDuong: return 28;
+            case MauNguoiChoi.Do: return 42;
+            default: return 0;
+        }
+    }
+
+    private Vector3 LayViTriChuongBanDau(QuancoMovement quan)
+    {
+        return quan.toaDoChuongBanDau;
     }
 }
