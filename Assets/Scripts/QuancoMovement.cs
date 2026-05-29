@@ -32,6 +32,11 @@ public class QuancoMovement : MonoBehaviour
     {
         dangDiChuyen = true;
 
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.PlayTokenMoveSFX();
+        }
+
         if (viTriHienTai == -1)
         {
             soBuoc = 1;

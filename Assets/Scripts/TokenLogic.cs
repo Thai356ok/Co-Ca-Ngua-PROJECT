@@ -158,6 +158,11 @@ public class TokenLogic : MonoBehaviour
                     quanDich.bacChuongHienTai = 0;
                     quanDich.transform.position = LayViTriChuongBanDau(quanDich);
 
+                    if (AudioManager.Instance != null)
+                    {
+                        AudioManager.Instance.PlayTokenKickSFX();
+                    }
+
                     Debug.Log($"[TokenLogic] 💥 {quanVuaMo.mauCuaToi} đá bay {quanDich.mauCuaToi} về chuồng!");
                     return MoveResult.KickedOpponent;
                 }
