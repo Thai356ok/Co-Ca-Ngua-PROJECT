@@ -309,7 +309,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "TR\xD2 CH\u01A0I D\xC2N GIAN VI\u1EC6T NAM"
+  m_text: "TR\xD2 CH\u01A0I D\xC2N GIAN"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 29f016746c3af5f4586669e5f22eded7, type: 2}
   m_sharedMaterial: {fileID: 521234021625160317, guid: 29f016746c3af5f4586669e5f22eded7, type: 2}
